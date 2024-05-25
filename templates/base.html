@@ -1,0 +1,26 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>{% block title %}My Shop{% endblock %}</title>
+        <meta name="description" content="Описание страницы">
+        <meta name="keywords" content="{% for produc in product %}{{ produc.slug }}{% if not forloop.last %}, {% endif %}{{% endfor %}">
+        <meta name="author" content="user=blank site=https://github.com/Rojf">
+        <meta name="description" content="">
+        <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    </head>
+    <body>
+    <div id="header">
+        <a href="/" class="logo">My shop</a>
+    </div>
+    <div id="subheader">
+        <div class="cart">Your cart is empty.</div>
+    </div>
+    <div id="content">
+        {% block content %}
+        {% endblock %}
+    </div>
+    </body>
+</html>
