@@ -6,7 +6,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>{% block title %}My Shop{% endblock %}</title>
         <meta name="description" content="Описание страницы">
-        <meta name="keywords" content="{% for produc in product %}{{ produc.slug }}{% if not forloop.last %}, {% endif %}{{% endfor %}">
+        {% if product %}<meta name="keywords" content="{{ product.slug }}">{% endif %}
+        {% if products %}<meta name="keywords" content="{% for product in products %}{{ product.slug }}{% if not forloop.last %}, {% endif %}{% endfor %}">{% endif %}
         <meta name="author" content="user=blank site=https://github.com/Rojf">
         <meta name="description" content="">
         <link rel="stylesheet" href="{% static 'css/base.css' %}">
