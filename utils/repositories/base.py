@@ -20,6 +20,13 @@ class BaseRepository:
         return cls.model.objects.select_related(*select_related).prefetch_related(*prefetch_related).all(*args, **kwargs)
 
     @classmethod
+    def filter(cls, *args, **kwargs):
+        select_related = kwargs.pop('select_related', [])
+        prefetch_related = kwargs.pop('prefetch_related', [])
+
+        return cls.model.objects.select_related(*select_related).prefetch_related(*prefetch_related).filter(*args, **kwargs)
+
+    @classmethod
     def created(cls, *args, **kwargs):
         return cls.model.objects.get_or_create(*args, **kwargs)
 
