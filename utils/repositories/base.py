@@ -27,7 +27,7 @@ class BaseRepository:
         return cls.model.objects.select_related(*select_related).prefetch_related(*prefetch_related).filter(*args, **kwargs)
 
     @classmethod
-    def created(cls, *args, **kwargs):
+    def create(cls, *args, **kwargs):
         return cls.model.objects.get_or_create(*args, **kwargs)
 
     @classmethod
