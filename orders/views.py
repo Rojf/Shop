@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.views import View
 from django.views.decorators.http import require_GET
 from django.http import HttpResponseNotFound
+from django.urls import reverse
 
 from .Repository import OrderItemRepository
 from .forms import OrderCreateForm
@@ -34,8 +35,9 @@ class OrderCreateView(View):
 
             cart.clear()
             celery_order_created.delay(order.id)
+            request.session['order_id'] = order.id
 
-            return redirect('orders:order_created', pk=order.id)
+            return redirect(reverse('payment:process'))
 
         return render(request, 'orders/order/create.html', {'cart': cart, 'form': form})
 

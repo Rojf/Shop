@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'shop.apps.ShopConfig',
     'cart.apps.CartConfig',
     'orders.apps.OrdersConfig',
+    'payment.apps.PaymentConfig',
     'debug_toolbar',
 ]
 
@@ -141,3 +142,7 @@ MEDIA_ROOT = BASE_DIR / 'media'
 CART_SESSION_ID = 'cart'
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+STRIPE_PUBLISHABLE_KEY = 'pk_test_51PLAk8CZgA3AS7d7ScT4NaKJxzDCHHlyJmJ0F9jReXkjCJ5r0xCWMAZTWGnTTFWgFw7KMJVLgb7MirTBg1EHM6vK00EdXVX3o3'
+STRIPE_SECRET_KEY = 'sk_test_51PLAk8CZgA3AS7d7NKjVBsZ2gMbCAWcQcXBVLfqrDwC9XsaHbxZWWVIrWGFaZfktoeLQVlZ842XvAnuTqkX9dNs600zO5DIFie'
+STRIPE_API_VERSION = '2024-04-10'
