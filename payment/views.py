@@ -28,6 +28,7 @@ def payment_process(request):
         }
 
         for item in order.items.all():
+            print("image", item.product.image)
             session_data['line_items'].append({
                 'price_data': {
                     'unit_amount': int(item.price * Decimal('100')),
@@ -43,6 +44,9 @@ def payment_process(request):
 
         return redirect(session.url, code=303)
     else:
+        for item in order.items.all():
+            if item.product.image:
+                print("image", item.product.image.url)
         return render(request, 'payment/process.html', locals())
 
 
