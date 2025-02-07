@@ -1,0 +1,902 @@
+[
+  {
+      "model": "api.product",
+      "pk": 1,
+      "fields": {
+          "category": 3,
+          "name": "Men's T-shirt",
+          "slug": "mens-tshirt",
+          "image": "https://example.com/images/mens-tshirt.jpg",
+          "description": "A stylish men's T-shirt in cotton fabric.",
+          "price": 19.99,
+          "currency": "USD",
+          "color": "Blue",
+          "size": "M",
+          "available": true,
+          "created": "2025-01-01T00:00:00Z",
+          "updated": "2025-01-01T00:00:00Z"
+      }
+  },
+  {
+      "model": "api.product",
+      "pk": 2,
+      "fields": {
+          "category": 4,
+          "name": "Men's Jeans",
+          "slug": "mens-jeans",
+          "image": "https://example.com/images/mens-jeans.jpg",
+          "description": "Comfortable and stylish men's jeans.",
+          "price": 49.99,
+          "currency": "USD",
+          "color": "Dark Blue",
+          "size": "L",
+          "available": true,
+          "created": "2025-01-01T00:00:00Z",
+          "updated": "2025-01-01T00:00:00Z"
+      }
+  },
+  {
+      "model": "api.product",
+      "pk": 3,
+      "fields": {
+          "category": 2,
+          "name": "Women's Dress",
+          "slug": "womens-dress",
+          "image": "https://example.com/images/womens-dress.jpg",
+          "description": "Elegant women's dress for formal occasions.",
+          "price": 79.99,
+          "currency": "USD",
+          "color": "Red",
+          "size": "S",
+          "available": true,
+          "created": "2025-01-01T00:00:00Z",
+          "updated": "2025-01-01T00:00:00Z"
+      }
+  },
+  {
+      "model": "api.product",
+      "pk": 4,
+      "fields": {
+          "category": 2,
+          "name": "Women's Blouse",
+          "slug": "womens-blouse",
+          "image": "https://example.com/images/womens-blouse.jpg",
+          "description": "Chic blouse for everyday wear.",
+          "price": 39.99,
+          "currency": "USD",
+          "color": "White",
+          "size": "M",
+          "available": true,
+          "created": "2025-01-01T00:00:00Z",
+          "updated": "2025-01-01T00:00:00Z"
+      }
+  },
+  {
+      "model": "api.product",
+      "pk": 5,
+      "fields": {
+          "category": 3,
+          "name": "Men's Jacket",
+          "slug": "mens-jacket",
+          "image": "https://example.com/images/mens-jacket.jpg",
+          "description": "Warm jacket for cold weather.",
+          "price": 99.99,
+          "currency": "USD",
+          "color": "Black",
+          "size": "M",
+          "available": true,
+          "created": "2025-01-01T00:00:00Z",
+          "updated": "2025-01-01T00:00:00Z"
+      }
+  },
+  {
+      "model": "api.product",
+      "pk": 6,
+      "fields": {
+          "category": 3,
+          "name": "Women's Sweater",
+          "slug": "womens-sweater",
+          "image": "https://example.com/images/womens-sweater.jpg",
+          "description": "Cozy sweater for chilly days.",
+          "price": 49.99,
+          "currency": "USD",
+          "color": "Grey",
+          "size": "L",
+          "available": true,
+          "created": "2025-01-01T00:00:00Z",
+          "updated": "2025-01-01T00:00:00Z"
+      }
+  },
+  {
+      "model": "api.product",
+      "pk": 7,
+      "fields": {
+          "category": 4,
+          "name": "Men's Sneakers",
+          "slug": "mens-sneakers",
+          "image": "https://example.com/images/mens-sneakers.jpg",
+          "description": "Comfortable sneakers for everyday use.",
+          "price": 59.99,
+          "currency": "USD",
+          "color": "White",
+          "size": "10",
+          "available": true,
+          "created": "2025-01-01T00:00:00Z",
+          "updated": "2025-01-01T00:00:00Z"
+      }
+  },
+  {
+      "model": "api.product",
+      "pk": 8,
+      "fields": {
+          "category": 4,
+          "name": "Women's Heels",
+          "slug": "womens-heels",
+          "image": "https://example.com/images/womens-heels.jpg",
+          "description": "Elegant heels for evening wear.",
+          "price": 79.99,
+          "currency": "USD",
+          "color": "Black",
+          "size": "7",
+          "available": true,
+          "created": "2025-01-01T00:00:00Z",
+          "updated": "2025-01-01T00:00:00Z"
+      }
+  },
+  {
+      "model": "api.product",
+      "pk": 9,
+      "fields": {
+          "category": 5,
+          "name": "Men's Watch",
+          "slug": "mens-watch",
+          "image": "https://example.com/images/mens-watch.jpg",
+          "description": "Stylish men's watch with leather strap.",
+          "price": 149.99,
+          "currency": "USD",
+          "color": "Brown",
+          "size": "One Size",
+          "available": true,
+          "created": "2025-01-01T00:00:00Z",
+          "updated": "2025-01-01T00:00:00Z"
+      }
+  },
+  {
+      "model": "api.product",
+      "pk": 10,
+      "fields": {
+          "category": 5,
+          "name": "Women's Necklace",
+          "slug": "womens-necklace",
+          "image": "https://example.com/images/womens-necklace.jpg",
+          "description": "Gold necklace with a diamond pendant.",
+          "price": 199.99,
+          "currency": "USD",
+          "color": "Gold",
+          "size": "One Size",
+          "available": true,
+          "created": "2025-01-01T00:00:00Z",
+          "updated": "2025-01-01T00:00:00Z"
+      }
+  },
+  {
+      "model": "api.product",
+      "pk": 11,
+      "fields": {
+          "category": 6,
+          "name": "Men's Sunglasses",
+          "slug": "mens-sunglasses",
+          "image": "https://example.com/images/mens-sunglasses.jpg",
+          "description": "Stylish sunglasses to protect your eyes.",
+          "price": 59.99,
+          "currency": "USD",
+          "color": "Black",
+          "size": "One Size",
+          "available": true,
+          "created": "2025-01-01T00:00:00Z",
+          "updated": "2025-01-01T00:00:00Z"
+      }
+  },
+  {
+      "model": "api.product",
+      "pk": 12,
+      "fields": {
+          "category": 6,
+          "name": "Women's Sunglasses",
+          "slug": "womens-sunglasses",
+          "image": "https://example.com/images/womens-sunglasses.jpg",
+          "description": "Chic sunglasses with UV protection.",
+          "price": 49.99,
+          "currency": "USD",
+          "color": "Gold",
+          "size": "One Size",
+          "available": true,
+          "created": "2025-01-01T00:00:00Z",
+          "updated": "2025-01-01T00:00:00Z"
+      }
+  },
+  {
+      "model": "api.product",
+      "pk": 13,
+      "fields": {
+          "category": 7,
+          "name": "Men's Wallet",
+          "slug": "mens-wallet",
+          "image": "https://example.com/images/mens-wallet.jpg",
+          "description": "Leather wallet with multiple compartments.",
+          "price": 39.99,
+          "currency": "USD",
+          "color": "Brown",
+          "size": "One Size",
+          "available": true,
+          "created": "2025-01-01T00:00:00Z",
+          "updated": "2025-01-01T00:00:00Z"
+      }
+  },
+  {
+      "model": "api.product",
+      "pk": 14,
+      "fields": {
+          "category": 7,
+          "name": "Women's Wallet",
+          "slug": "womens-wallet",
+          "image": "https://example.com/images/womens-wallet.jpg",
+          "description": "Compact wallet with card slots.",
+          "price": 29.99,
+          "currency": "USD",
+          "color": "Pink",
+          "size": "One Size",
+          "available": true,
+          "created": "2025-01-01T00:00:00Z",
+          "updated": "2025-01-01T00:00:00Z"
+      }
+  },
+  {
+      "model": "api.product",
+      "pk": 15,
+      "fields": {
+          "category": 8,
+          "name": "Men's Belt",
+          "slug": "mens-belt",
+          "image": "https://example.com/images/mens-belt.jpg",
+          "description": "Leather belt for a stylish look.",
+          "price": 24.99,
+          "currency": "USD",
+          "color": "Black",
+          "size": "M",
+          "available": true,
+          "created": "2025-01-01T00:00:00Z",
+          "updated": "2025-01-01T00:00:00Z"
+      }
+  },
+  {
+      "model": "api.product",
+      "pk": 16,
+      "fields": {
+          "category": 8,
+          "name": "Women's Scarf",
+          "slug": "womens-scarf",
+          "image": "https://example.com/images/womens-scarf.jpg",
+          "description": "Cozy scarf for winter.",
+          "price": 19.99,
+          "currency": "USD",
+          "color": "Red",
+          "size": "One Size",
+          "available": true,
+          "created": "2025-01-01T00:00:00Z",
+          "updated": "2025-01-01T00:00:00Z"
+      }
+  },
+  {
+      "model": "api.product",
+      "pk": 17,
+      "fields": {
+          "category": 9,
+          "name": "Men's Sneakers - Sports Edition",
+          "slug": "mens-sneakers-sports",
+          "image": "https://example.com/images/mens-sneakers-sports.jpg",
+          "description": "Sporty sneakers designed for active wear.",
+          "price": 69.99,
+          "currency": "USD",
+          "color": "Grey",
+          "size": "9",
+          "available": true,
+          "created": "2025-01-01T00:00:00Z",
+          "updated": "2025-01-01T00:00:00Z"
+      }
+  },
+  {
+      "model": "api.product",
+      "pk": 18,
+      "fields": {
+          "category": 9,
+          "name": "Women's Running Shoes",
+          "slug": "womens-running-shoes",
+          "image": "https://example.com/images/womens-running-shoes.jpg",
+          "description": "Running shoes for women with excellent support.",
+          "price": 89.99,
+          "currency": "USD",
+          "color": "Blue",
+          "size": "8",
+          "available": true,
+          "created": "2025-01-01T00:00:00Z",
+          "updated": "2025-01-01T00:00:00Z"
+      }
+  },
+  {
+      "model": "api.product",
+      "pk": 19,
+      "fields": {
+          "category": 10,
+          "name": "Men's Hooded Jacket",
+          "slug": "mens-hooded-jacket",
+          "image": "https://example.com/images/mens-hooded-jacket.jpg",
+          "description": "Warm hooded jacket for winter.",
+          "price": 89.99,
+          "currency": "USD",
+          "color": "Green",
+          "size": "L",
+          "available": true,
+          "created": "2025-01-01T00:00:00Z",
+          "updated": "2025-01-01T00:00:00Z"
+      }
+  },
+  {
+      "model": "api.product",
+      "pk": 20,
+      "fields": {
+          "category": 10,
+          "name": "Women's Winter Coat",
+          "slug": "womens-winter-coat",
+          "image": "https://example.com/images/womens-winter-coat.jpg",
+          "description": "Stylish winter coat with fur lining.",
+          "price": 129.99,
+          "currency": "USD",
+          "color": "Pink",
+          "size": "M",
+          "available": true,
+          "created": "2025-01-01T00:00:00Z",
+          "updated": "2025-01-01T00:00:00Z"
+      }
+  },
+  {
+      "model": "api.product",
+      "pk": 21,
+      "fields": {
+          "category": 3,
+          "name": "Men's T-shirt - Graphic",
+          "slug": "mens-tshirt-graphic",
+          "image": "https://example.com/images/mens-tshirt-graphic.jpg",
+          "description": "Stylish graphic t-shirt for casual wear.",
+          "price": 19.99,
+          "currency": "USD",
+          "color": "White",
+          "size": "M",
+          "available": true,
+          "created": "2025-01-01T00:00:00Z",
+          "updated": "2025-01-01T00:00:00Z"
+      }
+  },
+  {
+      "model": "api.product",
+      "pk": 22,
+      "fields": {
+          "category": 11,
+          "name": "Women's Blouse",
+          "slug": "womens-blouse",
+          "image": "https://example.com/images/womens-blouse.jpg",
+          "description": "Elegant blouse for formal or casual occasions.",
+          "price": 34.99,
+          "currency": "USD",
+          "color": "Blue",
+          "size": "S",
+          "available": true,
+          "created": "2025-01-01T00:00:00Z",
+          "updated": "2025-01-01T00:00:00Z"
+      }
+  },
+  {
+      "model": "api.product",
+      "pk": 23,
+      "fields": {
+          "category": 12,
+          "name": "Men's Shorts - Casual",
+          "slug": "mens-shorts-casual",
+          "image": "https://example.com/images/mens-shorts-casual.jpg",
+          "description": "Comfortable casual shorts for warm days.",
+          "price": 24.99,
+          "currency": "USD",
+          "color": "Khaki",
+          "size": "L",
+          "available": true,
+          "created": "2025-01-01T00:00:00Z",
+          "updated": "2025-01-01T00:00:00Z"
+      }
+  },
+  {
+      "model": "api.product",
+      "pk": 24,
+      "fields": {
+          "category": 12,
+          "name": "Women's Skirt",
+          "slug": "womens-skirt",
+          "image": "https://example.com/images/womens-skirt.jpg",
+          "description": "Flowy skirt for a chic and comfortable look.",
+          "price": 39.99,
+          "currency": "USD",
+          "color": "Black",
+          "size": "M",
+          "available": true,
+          "created": "2025-01-01T00:00:00Z",
+          "updated": "2025-01-01T00:00:00Z"
+      }
+  },
+  {
+      "model": "api.product",
+      "pk": 25,
+      "fields": {
+          "category": 13,
+          "name": "Men's Jeans",
+          "slug": "mens-jeans",
+          "image": "https://example.com/images/mens-jeans.jpg",
+          "description": "Comfortable and stylish jeans for everyday wear.",
+          "price": 49.99,
+          "currency": "USD",
+          "color": "Dark Blue",
+          "size": "32",
+          "available": true,
+          "created": "2025-01-01T00:00:00Z",
+          "updated": "2025-01-01T00:00:00Z"
+      }
+  },
+  {
+      "model": "api.product",
+      "pk": 26,
+      "fields": {
+          "category": 13,
+          "name": "Women's Skinny Jeans",
+          "slug": "womens-skinny-jeans",
+          "image": "https://example.com/images/womens-skinny-jeans.jpg",
+          "description": "Skinny jeans that perfectly hug your curves.",
+          "price": 59.99,
+          "currency": "USD",
+          "color": "Black",
+          "size": "28",
+          "available": true,
+          "created": "2025-01-01T00:00:00Z",
+          "updated": "2025-01-01T00:00:00Z"
+      }
+  },
+  {
+      "model": "api.product",
+      "pk": 27,
+      "fields": {
+          "category": 14,
+          "name": "Men's Hoodie",
+          "slug": "mens-hoodie",
+          "image": "https://example.com/images/mens-hoodie.jpg",
+          "description": "Cozy hoodie with a front pocket for casual wear.",
+          "price": 49.99,
+          "currency": "USD",
+          "color": "Grey",
+          "size": "M",
+          "available": true,
+          "created": "2025-01-01T00:00:00Z",
+          "updated": "2025-01-01T00:00:00Z"
+      }
+  },
+  {
+      "model": "api.product",
+      "pk": 28,
+      "fields": {
+          "category": 14,
+          "name": "Women's Sweatshirt",
+          "slug": "womens-sweatshirt",
+          "image": "https://example.com/images/womens-sweatshirt.jpg",
+          "description": "Soft sweatshirt for casual, comfortable wear.",
+          "price": 39.99,
+          "currency": "USD",
+          "color": "Pink",
+          "size": "S",
+          "available": true,
+          "created": "2025-01-01T00:00:00Z",
+          "updated": "2025-01-01T00:00:00Z"
+      }
+  },
+  {
+      "model": "api.product",
+      "pk": 29,
+      "fields": {
+          "category": 15,
+          "name": "Men's Suit",
+          "slug": "mens-suit",
+          "image": "https://example.com/images/mens-suit.jpg",
+          "description": "Perfectly tailored men's suit for formal events.",
+          "price": 199.99,
+          "currency": "USD",
+          "color": "Navy Blue",
+          "size": "L",
+          "available": true,
+          "created": "2025-01-01T00:00:00Z",
+          "updated": "2025-01-01T00:00:00Z"
+      }
+  },
+  {
+      "model": "api.product",
+      "pk": 30,
+      "fields": {
+          "category": 15,
+          "name": "Women's Evening Gown",
+          "slug": "womens-evening-gown",
+          "image": "https://example.com/images/womens-evening-gown.jpg",
+          "description": "Elegant evening gown for special occasions.",
+          "price": 149.99,
+          "currency": "USD",
+          "color": "Red",
+          "size": "M",
+          "available": true,
+          "created": "2025-01-01T00:00:00Z",
+          "updated": "2025-01-01T00:00:00Z"
+      }
+  },
+  {
+      "model": "api.product",
+      "pk": 31,
+      "fields": {
+          "category": 16,
+          "name": "Men's Leather Jacket",
+          "slug": "mens-leather-jacket",
+          "image": "https://example.com/images/mens-leather-jacket.jpg",
+          "description": "Stylish leather jacket for a rugged look.",
+          "price": 129.99,
+          "currency": "USD",
+          "color": "Black",
+          "size": "M",
+          "available": true,
+          "created": "2025-01-01T00:00:00Z",
+          "updated": "2025-01-01T00:00:00Z"
+      }
+  },
+  {
+      "model": "api.product",
+      "pk": 32,
+      "fields": {
+          "category": 16,
+          "name": "Women's Faux Leather Jacket",
+          "slug": "womens-faux-leather-jacket",
+          "image": "https://example.com/images/womens-faux-leather-jacket.jpg",
+          "description": "Trendy faux leather jacket for a fashionable look.",
+          "price": 99.99,
+          "currency": "USD",
+          "color": "Brown",
+          "size": "S",
+          "available": true,
+          "created": "2025-01-01T00:00:00Z",
+          "updated": "2025-01-01T00:00:00Z"
+      }
+  },
+  {
+      "model": "api.product",
+      "pk": 33,
+      "fields": {
+          "category": 17,
+          "name": "Men's Running Shoes",
+          "slug": "mens-running-shoes",
+          "image": "https://example.com/images/mens-running-shoes.jpg",
+          "description": "Comfortable running shoes for all your workouts.",
+          "price": 79.99,
+          "currency": "USD",
+          "color": "Blue",
+          "size": "10",
+          "available": true,
+          "created": "2025-01-01T00:00:00Z",
+          "updated": "2025-01-01T00:00:00Z"
+      }
+  },
+  {
+      "model": "api.product",
+      "pk": 34,
+      "fields": {
+          "category": 17,
+          "name": "Women's Sports Sneakers",
+          "slug": "womens-sports-sneakers",
+          "image": "https://example.com/images/womens-sports-sneakers.jpg",
+          "description": "Lightweight sports sneakers for active women.",
+          "price": 69.99,
+          "currency": "USD",
+          "color": "Pink",
+          "size": "8",
+          "available": true,
+          "created": "2025-01-01T00:00:00Z",
+          "updated": "2025-01-01T00:00:00Z"
+      }
+  },
+  {
+      "model": "api.product",
+      "pk": 35,
+      "fields": {
+          "category": 18,
+          "name": "Men's Sunglasses",
+          "slug": "mens-sunglasses",
+          "image": "https://example.com/images/mens-sunglasses.jpg",
+          "description": "Stylish sunglasses for sunny days.",
+          "price": 49.99,
+          "currency": "USD",
+          "color": "Black",
+          "size": "One Size",
+          "available": true,
+          "created": "2025-01-01T00:00:00Z",
+          "updated": "2025-01-01T00:00:00Z"
+      }
+  },
+  {
+      "model": "api.product",
+      "pk": 36,
+      "fields": {
+          "category": 18,
+          "name": "Women's Sunglasses",
+          "slug": "womens-sunglasses",
+          "image": "https://example.com/images/womens-sunglasses.jpg",
+          "description": "Chic sunglasses for fashionable women.",
+          "price": 39.99,
+          "currency": "USD",
+          "color": "Gold",
+          "size": "One Size",
+          "available": true,
+          "created": "2025-01-01T00:00:00Z",
+          "updated": "2025-01-01T00:00:00Z"
+      }
+  },
+  {
+      "model": "api.product",
+      "pk": 37,
+      "fields": {
+          "category": 19,
+          "name": "Men's Watch - Classic",
+          "slug": "mens-watch-classic",
+          "image": "https://example.com/images/mens-watch-classic.jpg",
+          "description": "A classic wristwatch with a timeless design.",
+          "price": 119.99,
+          "currency": "USD",
+          "color": "Silver",
+          "size": "One Size",
+          "available": true,
+          "created": "2025-01-01T00:00:00Z",
+          "updated": "2025-01-01T00:00:00Z"
+      }
+  },
+  {
+      "model": "api.product",
+      "pk": 38,
+      "fields": {
+          "category": 19,
+          "name": "Women's Watch - Elegant",
+          "slug": "womens-watch-elegant",
+          "image": "https://example.com/images/womens-watch-elegant.jpg",
+          "description": "Elegant watch for women, suitable for any occasion.",
+          "price": 129.99,
+          "currency": "USD",
+          "color": "Rose Gold",
+          "size": "One Size",
+          "available": true,
+          "created": "2025-01-01T00:00:00Z",
+          "updated": "2025-01-01T00:00:00Z"
+      }
+  },
+  {
+      "model": "api.product",
+      "pk": 39,
+      "fields": {
+          "category": 20,
+          "name": "Men's Backpack",
+          "slug": "mens-backpack",
+          "image": "https://example.com/images/mens-backpack.jpg",
+          "description": "Durable and spacious backpack for men.",
+          "price": 69.99,
+          "currency": "USD",
+          "color": "Grey",
+          "size": "One Size",
+          "available": true,
+          "created": "2025-01-01T00:00:00Z",
+          "updated": "2025-01-01T00:00:00Z"
+      }
+  },
+  {
+      "model": "api.product",
+      "pk": 40,
+      "fields": {
+          "category": 20,
+          "name": "Women's Tote Bag",
+          "slug": "womens-tote-bag",
+          "image": "https://example.com/images/womens-tote-bag.jpg",
+          "description": "Spacious and stylish tote bag for women.",
+          "price": 39.99,
+          "currency": "USD",
+          "color": "Beige",
+          "size": "One Size",
+          "available": true,
+          "created": "2025-01-01T00:00:00Z",
+          "updated": "2025-01-01T00:00:00Z"
+      }
+  },
+  {
+      "model": "api.product",
+      "pk": 41,
+      "fields": {
+          "category": 21,
+          "name": "Men's Casual Shirt",
+          "slug": "mens-casual-shirt",
+          "image": "https://example.com/images/mens-casual-shirt.jpg",
+          "description": "Comfortable and stylish shirt for casual wear.",
+          "price": 49.99,
+          "currency": "USD",
+          "color": "White",
+          "size": "L",
+          "available": true,
+          "created": "2025-01-01T00:00:00Z",
+          "updated": "2025-01-01T00:00:00Z"
+      }
+  },
+  {
+      "model": "api.product",
+      "pk": 42,
+      "fields": {
+          "category": 21,
+          "name": "Women's Blouse",
+          "slug": "womens-blouse",
+          "image": "https://example.com/images/womens-blouse.jpg",
+          "description": "Elegant blouse for both casual and formal wear.",
+          "price": 59.99,
+          "currency": "USD",
+          "color": "Blue",
+          "size": "M",
+          "available": true,
+          "created": "2025-01-01T00:00:00Z",
+          "updated": "2025-01-01T00:00:00Z"
+      }
+  },
+  {
+      "model": "api.product",
+      "pk": 43,
+      "fields": {
+          "category": 22,
+          "name": "Men's Jeans",
+          "slug": "mens-jeans",
+          "image": "https://example.com/images/mens-jeans.jpg",
+          "description": "Classic denim jeans for men.",
+          "price": 69.99,
+          "currency": "USD",
+          "color": "Denim",
+          "size": "32",
+          "available": true,
+          "created": "2025-01-01T00:00:00Z",
+          "updated": "2025-01-01T00:00:00Z"
+      }
+  },
+  {
+      "model": "api.product",
+      "pk": 44,
+      "fields": {
+          "category": 22,
+          "name": "Women's Skinny Jeans",
+          "slug": "womens-skinny-jeans",
+          "image": "https://example.com/images/womens-skinny-jeans.jpg",
+          "description": "Trendy and comfortable skinny jeans for women.",
+          "price": 59.99,
+          "currency": "USD",
+          "color": "Black",
+          "size": "S",
+          "available": true,
+          "created": "2025-01-01T00:00:00Z",
+          "updated": "2025-01-01T00:00:00Z"
+      }
+  },
+  {
+      "model": "api.product",
+      "pk": 45,
+      "fields": {
+          "category": 23,
+          "name": "Men's Running Shorts",
+          "slug": "mens-running-shorts",
+          "image": "https://example.com/images/mens-running-shorts.jpg",
+          "description": "Lightweight and breathable shorts for running.",
+          "price": 29.99,
+          "currency": "USD",
+          "color": "Grey",
+          "size": "L",
+          "available": true,
+          "created": "2025-01-01T00:00:00Z",
+          "updated": "2025-01-01T00:00:00Z"
+      }
+  },
+  {
+      "model": "api.product",
+      "pk": 46,
+      "fields": {
+          "category": 23,
+          "name": "Women's Yoga Pants",
+          "slug": "womens-yoga-pants",
+          "image": "https://example.com/images/womens-yoga-pants.jpg",
+          "description": "Comfortable and flexible pants for yoga.",
+          "price": 39.99,
+          "currency": "USD",
+          "color": "Purple",
+          "size": "M",
+          "available": true,
+          "created": "2025-01-01T00:00:00Z",
+          "updated": "2025-01-01T00:00:00Z"
+      }
+  },
+  {
+      "model": "api.product",
+      "pk": 47,
+      "fields": {
+          "category": 24,
+          "name": "Men's Casual Shorts",
+          "slug": "mens-casual-shorts",
+          "image": "https://example.com/images/mens-casual-shorts.jpg",
+          "description": "Stylish and comfortable casual shorts for men.",
+          "price": 34.99,
+          "currency": "USD",
+          "color": "Navy",
+          "size": "M",
+          "available": true,
+          "created": "2025-01-01T00:00:00Z",
+          "updated": "2025-01-01T00:00:00Z"
+      }
+  },
+  {
+      "model": "api.product",
+      "pk": 48,
+      "fields": {
+          "category": 24,
+          "name": "Women's Denim Skirt",
+          "slug": "womens-denim-skirt",
+          "image": "https://example.com/images/womens-denim-skirt.jpg",
+          "description": "Classic denim skirt for a casual look.",
+          "price": 49.99,
+          "currency": "USD",
+          "color": "Light Blue",
+          "size": "S",
+          "available": true,
+          "created": "2025-01-01T00:00:00Z",
+          "updated": "2025-01-01T00:00:00Z"
+      }
+  },
+  {
+      "model": "api.product",
+      "pk": 49,
+      "fields": {
+          "category": 25,
+          "name": "Men's Chinos",
+          "slug": "mens-chinos",
+          "image": "https://example.com/images/mens-chinos.jpg",
+          "description": "Smart chinos for casual and semi-formal wear.",
+          "price": 59.99,
+          "currency": "USD",
+          "color": "Beige",
+          "size": "32",
+          "available": true,
+          "created": "2025-01-01T00:00:00Z",
+          "updated": "2025-01-01T00:00:00Z"
+      }
+  },
+  {
+      "model": "api.product",
+      "pk": 50,
+      "fields": {
+          "category": 25,
+          "name": "Women's A-Line Skirt",
+          "slug": "womens-a-line-skirt",
+          "image": "https://example.com/images/womens-a-line-skirt.jpg",
+          "description": "Elegant A-line skirt for formal or casual occasions.",
+          "price": 39.99,
+          "currency": "USD",
+          "color": "Black",
+          "size": "M",
+          "available": true,
+          "created": "2025-01-01T00:00:00Z",
+          "updated": "2025-01-01T00:00:00Z"
+      }
+  }
+]

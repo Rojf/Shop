@@ -1,0 +1,403 @@
+[
+    {
+        "model": "api.orderitem",
+        "pk": 1,
+        "fields": {
+            "order": 1,
+            "product_id": 1001,
+            "price": "10.99",
+            "quantity": 2
+        }
+    },
+    {
+        "model": "api.orderitem",
+        "pk": 2,
+        "fields": {
+            "order": 1,
+            "product_id": 1002,
+            "price": "25.50",
+            "quantity": 1
+        }
+    },
+    {
+        "model": "api.orderitem",
+        "pk": 3,
+        "fields": {
+            "order": 1,
+            "product_id": 1003,
+            "price": "15.75",
+            "quantity": 3
+        }
+    },
+    {
+        "model": "api.orderitem",
+        "pk": 4,
+        "fields": {
+            "order": 1,
+            "product_id": 1004,
+            "price": "8.99",
+            "quantity": 5
+        }
+    },
+    {
+        "model": "api.orderitem",
+        "pk": 5,
+        "fields": {
+            "order": 2,
+            "product_id": 1005,
+            "price": "12.49",
+            "quantity": 1
+        }
+    },
+    {
+        "model": "api.orderitem",
+        "pk": 6,
+        "fields": {
+            "order": 2,
+            "product_id": 1006,
+            "price": "5.99",
+            "quantity": 4
+        }
+    },
+    {
+        "model": "api.orderitem",
+        "pk": 7,
+        "fields": {
+            "order": 2,
+            "product_id": 1007,
+            "price": "20.00",
+            "quantity": 2
+        }
+    },
+    {
+        "model": "api.orderitem",
+        "pk": 8,
+        "fields": {
+            "order": 2,
+            "product_id": 1008,
+            "price": "18.75",
+            "quantity": 1
+        }
+    },
+    {
+        "model": "api.orderitem",
+        "pk": 9,
+        "fields": {
+            "order": 3,
+            "product_id": 1009,
+            "price": "30.00",
+            "quantity": 2
+        }
+    },
+    {
+        "model": "api.orderitem",
+        "pk": 10,
+        "fields": {
+            "order": 3,
+            "product_id": 1010,
+            "price": "50.00",
+            "quantity": 1
+        }
+    },
+    {
+        "model": "api.orderitem",
+        "pk": 11,
+        "fields": {
+            "order": 3,
+            "product_id": 1011,
+            "price": "40.00",
+            "quantity": 3
+        }
+    },
+    {
+        "model": "api.orderitem",
+        "pk": 12,
+        "fields": {
+            "order": 3,
+            "product_id": 1012,
+            "price": "22.50",
+            "quantity": 2
+        }
+    },
+    {
+        "model": "api.orderitem",
+        "pk": 13,
+        "fields": {
+            "order": 4,
+            "product_id": 1013,
+            "price": "18.00",
+            "quantity": 2
+        }
+    },
+    {
+        "model": "api.orderitem",
+        "pk": 14,
+        "fields": {
+            "order": 4,
+            "product_id": 1014,
+            "price": "13.50",
+            "quantity": 3
+        }
+    },
+    {
+        "model": "api.orderitem",
+        "pk": 15,
+        "fields": {
+            "order": 4,
+            "product_id": 1015,
+            "price": "10.00",
+            "quantity": 1
+        }
+    },
+    {
+        "model": "api.orderitem",
+        "pk": 16,
+        "fields": {
+            "order": 4,
+            "product_id": 1016,
+            "price": "25.00",
+            "quantity": 2
+        }
+    },
+    {
+        "model": "api.orderitem",
+        "pk": 17,
+        "fields": {
+            "order": 5,
+            "product_id": 1017,
+            "price": "8.00",
+            "quantity": 5
+        }
+    },
+    {
+        "model": "api.orderitem",
+        "pk": 18,
+        "fields": {
+            "order": 5,
+            "product_id": 1018,
+            "price": "14.99",
+            "quantity": 1
+        }
+    },
+    {
+        "model": "api.orderitem",
+        "pk": 19,
+        "fields": {
+            "order": 5,
+            "product_id": 1019,
+            "price": "9.99",
+            "quantity": 3
+        }
+    },
+    {
+        "model": "api.orderitem",
+        "pk": 20,
+        "fields": {
+            "order": 5,
+            "product_id": 1020,
+            "price": "20.00",
+            "quantity": 1
+        }
+    },
+    {
+        "model": "api.orderitem",
+        "pk": 21,
+        "fields": {
+            "order": 6,
+            "product_id": 1021,
+            "price": "5.00",
+            "quantity": 2
+        }
+    },
+    {
+        "model": "api.orderitem",
+        "pk": 22,
+        "fields": {
+            "order": 6,
+            "product_id": 1022,
+            "price": "11.99",
+            "quantity": 3
+        }
+    },
+    {
+        "model": "api.orderitem",
+        "pk": 23,
+        "fields": {
+            "order": 6,
+            "product_id": 1023,
+            "price": "15.00",
+            "quantity": 4
+        }
+    },
+    {
+        "model": "api.orderitem",
+        "pk": 24,
+        "fields": {
+            "order": 6,
+            "product_id": 1024,
+            "price": "25.00",
+            "quantity": 2
+        }
+    },
+    {
+        "model": "api.orderitem",
+        "pk": 25,
+        "fields": {
+            "order": 7,
+            "product_id": 1025,
+            "price": "7.99",
+            "quantity": 2
+        }
+    },
+    {
+        "model": "api.orderitem",
+        "pk": 26,
+        "fields": {
+            "order": 7,
+            "product_id": 1026,
+            "price": "13.00",
+            "quantity": 1
+        }
+    },
+    {
+        "model": "api.orderitem",
+        "pk": 27,
+        "fields": {
+            "order": 7,
+            "product_id": 1027,
+            "price": "18.50",
+            "quantity": 3
+        }
+    },
+    {
+        "model": "api.orderitem",
+        "pk": 28,
+        "fields": {
+            "order": 7,
+            "product_id": 1028,
+            "price": "9.00",
+            "quantity": 4
+        }
+    },
+    {
+        "model": "api.orderitem",
+        "pk": 29,
+        "fields": {
+            "order": 8,
+            "product_id": 1029,
+            "price": "11.00",
+            "quantity": 2
+        }
+    },
+    {
+        "model": "api.orderitem",
+        "pk": 30,
+        "fields": {
+            "order": 8,
+            "product_id": 1030,
+            "price": "25.00",
+            "quantity": 1
+        }
+    },
+    {
+        "model": "api.orderitem",
+        "pk": 31,
+        "fields": {
+            "order": 8,
+            "product_id": 1031,
+            "price": "17.99",
+            "quantity": 2
+        }
+    },
+    {
+        "model": "api.orderitem",
+        "pk": 32,
+        "fields": {
+            "order": 8,
+            "product_id": 1032,
+            "price": "8.50",
+            "quantity": 3
+        }
+    },
+    {
+        "model": "api.orderitem",
+        "pk": 33,
+        "fields": {
+            "order": 9,
+            "product_id": 1033,
+            "price": "12.99",
+            "quantity": 2
+        }
+    },
+    {
+        "model": "api.orderitem",
+        "pk": 34,
+        "fields": {
+            "order": 9,
+            "product_id": 1034,
+            "price": "19.99",
+            "quantity": 1
+        }
+    },
+    {
+        "model": "api.orderitem",
+        "pk": 35,
+        "fields": {
+            "order": 9,
+            "product_id": 1035,
+            "price": "30.00",
+            "quantity": 1
+        }
+    },
+    {
+        "model": "api.orderitem",
+        "pk": 36,
+        "fields": {
+            "order": 9,
+            "product_id": 1036,
+            "price": "50.00",
+            "quantity": 2
+        }
+    },
+    {
+        "model": "api.orderitem",
+        "pk": 37,
+        "fields": {
+            "order": 10,
+            "product_id": 1037,
+            "price": "5.00",
+            "quantity": 4
+        }
+    },
+    {
+        "model": "api.orderitem",
+        "pk": 38,
+        "fields": {
+            "order": 10,
+            "product_id": 1038,
+            "price": "10.00",
+            "quantity": 2
+        }
+    },
+    {
+        "model": "api.orderitem",
+        "pk": 39,
+        "fields": {
+            "order": 10,
+            "product_id": 1039,
+            "price": "15.00",
+            "quantity": 3
+        }
+    },
+    {
+        "model": "api.orderitem",
+        "pk": 40,
+        "fields": {
+            "order": 10,
+            "product_id": 1040,
+            "price": "12.00",
+            "quantity": 1
+        }
+    }
+]
+

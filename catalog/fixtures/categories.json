@@ -1,0 +1,243 @@
+[
+    {
+        "model": "api.category",
+        "pk": 1,
+        "fields": {
+            "name": "Men's Clothing",
+            "slug": "mens-clothing"
+        }
+    },
+    {
+        "model": "api.category",
+        "pk": 2,
+        "fields": {
+            "name": "Women's Clothing",
+            "slug": "womens-clothing"
+        }
+    },
+    {
+        "model": "api.category",
+        "pk": 3,
+        "fields": {
+            "name": "T-shirts",
+            "slug": "t-shirts"
+        }
+    },
+    {
+        "model": "api.category",
+        "pk": 4,
+        "fields": {
+            "name": "Jeans",
+            "slug": "jeans"
+        }
+    },
+    {
+        "model": "api.category",
+        "pk": 5,
+        "fields": {
+            "name": "Jackets",
+            "slug": "jackets"
+        }
+    },
+    {
+        "model": "api.category",
+        "pk": 6,
+        "fields": {
+            "name": "Sweaters",
+            "slug": "sweaters"
+        }
+    },
+    {
+        "model": "api.category",
+        "pk": 7,
+        "fields": {
+            "name": "Dresses",
+            "slug": "dresses"
+        }
+    },
+    {
+        "model": "api.category",
+        "pk": 8,
+        "fields": {
+            "name": "Shoes",
+            "slug": "shoes"
+        }
+    },
+    {
+        "model": "api.category",
+        "pk": 9,
+        "fields": {
+            "name": "Accessories",
+            "slug": "accessories"
+        }
+    },
+    {
+        "model": "api.category",
+        "pk": 10,
+        "fields": {
+            "name": "Sportswear",
+            "slug": "sportswear"
+        }
+    },
+    {
+        "model": "api.category",
+        "pk": 11,
+        "fields": {
+            "name": "Swimwear",
+            "slug": "swimwear"
+        }
+    },
+    {
+        "model": "api.category",
+        "pk": 12,
+        "fields": {
+            "name": "Lingerie",
+            "slug": "lingerie"
+        }
+    },
+    {
+        "model": "api.category",
+        "pk": 13,
+        "fields": {
+            "name": "Outerwear",
+            "slug": "outerwear"
+        }
+    },
+    {
+        "model": "api.category",
+        "pk": 14,
+        "fields": {
+            "name": "Hats",
+            "slug": "hats"
+        }
+    },
+    {
+        "model": "api.category",
+        "pk": 15,
+        "fields": {
+            "name": "Scarves",
+            "slug": "scarves"
+        }
+    },
+    {
+        "model": "api.category",
+        "pk": 16,
+        "fields": {
+            "name": "Bags",
+            "slug": "bags"
+        }
+    },
+    {
+        "model": "api.category",
+        "pk": 17,
+        "fields": {
+            "name": "Belts",
+            "slug": "belts"
+        }
+    },
+    {
+        "model": "api.category",
+        "pk": 18,
+        "fields": {
+            "name": "Hoodies",
+            "slug": "hoodies"
+        }
+    },
+    {
+        "model": "api.category",
+        "pk": 19,
+        "fields": {
+            "name": "Sweatpants",
+            "slug": "sweatpants"
+        }
+    },
+    {
+        "model": "api.category",
+        "pk": 20,
+        "fields": {
+            "name": "Shorts",
+            "slug": "shorts"
+        }
+    },
+    {
+        "model": "api.category",
+        "pk": 21,
+        "fields": {
+            "name": "Rompers",
+            "slug": "rompers"
+        }
+    },
+    {
+        "model": "api.category",
+        "pk": 22,
+        "fields": {
+            "name": "Suits",
+            "slug": "suits"
+        }
+    },
+    {
+        "model": "api.category",
+        "pk": 23,
+        "fields": {
+            "name": "Coats",
+            "slug": "coats"
+        }
+    },
+    {
+        "model": "api.category",
+        "pk": 24,
+        "fields": {
+            "name": "Gloves",
+            "slug": "gloves"
+        }
+    },
+    {
+        "model": "api.category",
+        "pk": 25,
+        "fields": {
+            "name": "Jewelry",
+            "slug": "jewelry"
+        }
+    },
+    {
+        "model": "api.category",
+        "pk": 26,
+        "fields": {
+            "name": "Sunglasses",
+            "slug": "sunglasses"
+        }
+    },
+    {
+        "model": "api.category",
+        "pk": 27,
+        "fields": {
+            "name": "Watches",
+            "slug": "watches"
+        }
+    },
+    {
+        "model": "api.category",
+        "pk": 28,
+        "fields": {
+            "name": "Shirts",
+            "slug": "shirts"
+        }
+    },
+    {
+        "model": "api.category",
+        "pk": 29,
+        "fields": {
+            "name": "Casual Wear",
+            "slug": "casual-wear"
+        }
+    },
+    {
+        "model": "api.category",
+        "pk": 30,
+        "fields": {
+            "name": "Formal Wear",
+            "slug": "formal-wear"
+        }
+    }
+]
+
