@@ -8,14 +8,21 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
             name='Category',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                (
+                    'id',
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name='ID',
+                    ),
+                ),
                 ('name', models.CharField(max_length=200)),
                 ('slug', models.SlugField(max_length=200, unique=True)),
             ],
@@ -23,13 +30,23 @@ class Migration(migrations.Migration):
                 'verbose_name': 'category',
                 'verbose_name_plural': 'categories',
                 'ordering': ['name'],
-                'indexes': [models.Index(fields=['name'], name='api_categor_name_53a3ad_idx')],
+                'indexes': [
+                    models.Index(fields=['name'], name='api_categor_name_53a3ad_idx')
+                ],
             },
         ),
         migrations.CreateModel(
             name='Product',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                (
+                    'id',
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name='ID',
+                    ),
+                ),
                 ('name', models.CharField(max_length=200)),
                 ('slug', models.SlugField(max_length=200)),
                 ('image', models.URLField(blank=True)),
@@ -41,11 +58,24 @@ class Migration(migrations.Migration):
                 ('available', models.BooleanField(default=True)),
                 ('created', models.DateTimeField(auto_now_add=True)),
                 ('updated', models.DateTimeField(auto_now=True)),
-                ('category', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='products', to='api.category')),
+                (
+                    'category',
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name='products',
+                        to='api.category',
+                    ),
+                ),
             ],
             options={
                 'ordering': ['name'],
-                'indexes': [models.Index(fields=['id', 'slug'], name='api_product_id_4a9666_idx'), models.Index(fields=['name'], name='api_product_name_73c704_idx'), models.Index(fields=['-created'], name='api_product_created_a9919c_idx')],
+                'indexes': [
+                    models.Index(fields=['id', 'slug'], name='api_product_id_4a9666_idx'),
+                    models.Index(fields=['name'], name='api_product_name_73c704_idx'),
+                    models.Index(
+                        fields=['-created'], name='api_product_created_a9919c_idx'
+                    ),
+                ],
             },
         ),
     ]

@@ -1,5 +1,6 @@
-from utils.repositories.base import BaseRepository
-from .models import Order, OrderItem, User, Delivery
+from utils.base_repository import BaseRepository
+
+from .models import Delivery, Order, OrderItem, User
 
 
 class OrderItemRepository(BaseRepository):
@@ -17,7 +18,10 @@ class OrdersRepository(BaseRepository):
 class UserRepository(BaseRepository):
     model = User
 
+    @classmethod
+    def create_user(cls, *args, **kwargs):
+        return cls.model.objects.create_user(*args, **kwargs)
+
 
 class DeliveryRepository(BaseRepository):
     model = Delivery
-

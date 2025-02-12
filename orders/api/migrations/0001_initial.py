@@ -9,17 +9,55 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
             name='Order',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('order_id', models.BigIntegerField(unique=True, validators=[django.core.validators.MinValueValidator(1), django.core.validators.MaxValueValidator(9223372036854775807)])),
-                ('cart_id', models.BigIntegerField(unique=True, validators=[django.core.validators.MinValueValidator(1), django.core.validators.MaxValueValidator(9223372036854775807)])),
-                ('status', models.CharField(choices=[('P', 'Pending'), ('R', 'Processing'), ('S', 'Shipped'), ('D', 'Delivered'), ('C', 'Canceledн')], default='P', max_length=1)),
+                (
+                    'id',
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name='ID',
+                    ),
+                ),
+                (
+                    'order_id',
+                    models.BigIntegerField(
+                        unique=True,
+                        validators=[
+                            django.core.validators.MinValueValidator(1),
+                            django.core.validators.MaxValueValidator(9223372036854775807),
+                        ],
+                    ),
+                ),
+                (
+                    'cart_id',
+                    models.BigIntegerField(
+                        unique=True,
+                        validators=[
+                            django.core.validators.MinValueValidator(1),
+                            django.core.validators.MaxValueValidator(9223372036854775807),
+                        ],
+                    ),
+                ),
+                (
+                    'status',
+                    models.CharField(
+                        choices=[
+                            ('P', 'Pending'),
+                            ('R', 'Processing'),
+                            ('S', 'Shipped'),
+                            ('D', 'Delivered'),
+                            ('C', 'Canceledн'),
+                        ],
+                        default='P',
+                        max_length=1,
+                    ),
+                ),
                 ('currency', models.CharField(max_length=5)),
                 ('shipping_cost', models.PositiveIntegerField()),
                 ('inclubing_taxes', models.PositiveIntegerField()),
@@ -29,60 +67,182 @@ class Migration(migrations.Migration):
             ],
             options={
                 'ordering': ['-created'],
-                'indexes': [models.Index(fields=['-created'], name='api_order_created_365695_idx')],
+                'indexes': [
+                    models.Index(fields=['-created'], name='api_order_created_365695_idx')
+                ],
             },
         ),
         migrations.CreateModel(
             name='Delivery',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                (
+                    'id',
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name='ID',
+                    ),
+                ),
                 ('tracking_id', models.CharField(blank=True, max_length=50)),
                 ('tracking_url', models.URLField(blank=True, max_length=500)),
                 ('delivery_date', models.CharField(blank=True, max_length=100)),
-                ('delivery_type', models.CharField(choices=[('P', 'Pickup'), ('C', 'Courier')], default='C', max_length=1)),
+                (
+                    'delivery_type',
+                    models.CharField(
+                        choices=[('P', 'Pickup'), ('C', 'Courier')],
+                        default='C',
+                        max_length=1,
+                    ),
+                ),
                 ('comment_to_delivery', models.TextField(blank=True, max_length=5000)),
                 ('address_1', models.CharField(max_length=300)),
                 ('address_2', models.CharField(max_length=300)),
-                ('postal_code', models.PositiveIntegerField(validators=[django.core.validators.MinValueValidator(1), django.core.validators.MaxValueValidator(50)])),
+                (
+                    'postal_code',
+                    models.PositiveIntegerField(
+                        validators=[
+                            django.core.validators.MinValueValidator(1),
+                            django.core.validators.MaxValueValidator(50),
+                        ]
+                    ),
+                ),
                 ('city', models.CharField(max_length=150)),
                 ('country', models.CharField(max_length=250)),
-                ('order', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, related_name='delivery_details', to='api.order')),
+                (
+                    'order',
+                    models.OneToOneField(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name='delivery_details',
+                        to='api.order',
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
             name='OrderItem',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('product_id', models.BigIntegerField(blank=True, validators=[django.core.validators.MinValueValidator(1), django.core.validators.MaxValueValidator(9223372036854775807)])),
+                (
+                    'id',
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name='ID',
+                    ),
+                ),
+                (
+                    'product_id',
+                    models.BigIntegerField(
+                        blank=True,
+                        validators=[
+                            django.core.validators.MinValueValidator(1),
+                            django.core.validators.MaxValueValidator(9223372036854775807),
+                        ],
+                    ),
+                ),
                 ('name', models.CharField(max_length=300)),
                 ('image_url', models.URLField(max_length=1000)),
                 ('size', models.CharField(max_length=30)),
                 ('color', models.CharField(max_length=50)),
                 ('price', models.DecimalField(decimal_places=2, max_digits=10)),
-                ('quantity', models.PositiveIntegerField(default=1, validators=[django.core.validators.MinValueValidator(1), django.core.validators.MaxValueValidator(50)])),
-                ('order', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='items', to='api.order')),
+                (
+                    'quantity',
+                    models.PositiveIntegerField(
+                        default=1,
+                        validators=[
+                            django.core.validators.MinValueValidator(1),
+                            django.core.validators.MaxValueValidator(50),
+                        ],
+                    ),
+                ),
+                (
+                    'order',
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name='items',
+                        to='api.order',
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
             name='Payment',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                (
+                    'id',
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name='ID',
+                    ),
+                ),
                 ('payment_id', models.CharField(blank=True, max_length=250)),
                 ('paid', models.BooleanField(default=False)),
-                ('payment_type', models.CharField(choices=[('S', 'Stripe'), ('P', 'Paypal'), ('A', 'Applepay')], default='S', max_length=1)),
-                ('order', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='payment_details', to='api.order')),
+                (
+                    'payment_type',
+                    models.CharField(
+                        choices=[('S', 'Stripe'), ('P', 'Paypal'), ('A', 'Applepay')],
+                        default='S',
+                        max_length=1,
+                    ),
+                ),
+                (
+                    'order',
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name='payment_details',
+                        to='api.order',
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
             name='User',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('user_id', models.BigIntegerField(blank=True, validators=[django.core.validators.MinValueValidator(1), django.core.validators.MaxValueValidator(9223372036854775807)])),
+                (
+                    'id',
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name='ID',
+                    ),
+                ),
+                (
+                    'user_id',
+                    models.BigIntegerField(
+                        blank=True,
+                        validators=[
+                            django.core.validators.MinValueValidator(1),
+                            django.core.validators.MaxValueValidator(9223372036854775807),
+                        ],
+                    ),
+                ),
                 ('first_name', models.CharField(max_length=150)),
                 ('last_name', models.CharField(max_length=150)),
                 ('email', models.EmailField(max_length=254)),
-                ('phone_number', models.CharField(max_length=20, validators=[django.core.validators.RegexValidator(message="Phone number must be entered in the format: '+999(999)-999-9999'. Up to 18 digits allowed", regex='^\\+?(\\d{1,4})?[\\s\\-\\.]?\\(?\\d+\\)?[\\s\\-\\.]?\\d+[\\s\\-\\.]?\\d+[\\s\\-\\.]?\\d+$')])),
-                ('order', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, related_name='user_details', to='api.order')),
+                (
+                    'phone_number',
+                    models.CharField(
+                        max_length=20,
+                        validators=[
+                            django.core.validators.RegexValidator(
+                                message="Phone number must be entered in the format: '+999(999)-999-9999'. Up to 18 digits allowed",
+                                regex='^\\+?(\\d{1,4})?[\\s\\-\\.]?\\(?\\d+\\)?[\\s\\-\\.]?\\d+[\\s\\-\\.]?\\d+[\\s\\-\\.]?\\d+$',
+                            )
+                        ],
+                    ),
+                ),
+                (
+                    'order',
+                    models.OneToOneField(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name='user_details',
+                        to='api.order',
+                    ),
+                ),
             ],
         ),
     ]

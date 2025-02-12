@@ -1,17 +1,18 @@
-import requests
 import json
-from typing import Optional, Dict, Union
+from typing import Dict, Optional, Union
 
-from django.http import HttpRequest
+import requests
 from django.conf import settings
+from django.http import HttpRequest
+from ninja.errors import HttpError
 
 
 def make_request_with_session(
-    session:    requests.Session,
-    payload:    Optional[dict] = None,
-    headers:    Optional[dict] = None,
-    method:     str = "GET",
-    url:        str = ""
+    session: requests.Session,
+    payload: Optional[dict] = None,
+    headers: Optional[dict] = None,
+    method: str = "GET",
+    url: str = "",
 ):
     if payload is None:
         payload = {}
@@ -25,22 +26,20 @@ def make_request_with_session(
         method=method,
         url=url,
         data=json.dumps(payload),
-        headers=headers
+        headers=headers,
     )
 
     try:
         data = response.json()
     except json.JSONDecodeError:
         print("The response is not correct JSON.")
-        data = dict()
+        data = {}
 
     return response.status_code, data
 
 
 def make_request_with_session_cookie(
-    request: HttpRequest,
-    url: str,
-    **kwargs: dict
+    request: HttpRequest, url: str, timeout: int = 10, **kwargs: dict
 ) -> Union[Dict, None]:
     session_cookie = request.COOKIES.get(settings.SESSION_COOKIE_NAME)
     headers = kwargs.get('headers', {})
@@ -48,8 +47,8 @@ def make_request_with_session_cookie(
     if session_cookie:
         if not headers.get('cookie'):
             headers['cookie'] = f'{settings.SESSION_COOKIE_NAME}={session_cookie}'
-        
-        response = requests.get(url, headers=headers)
+
+        response = requests.get(url, headers=headers, timeout=timeout)
 
         if response.status_code == 200:
             return response.json()
@@ -57,10 +56,11 @@ def make_request_with_session_cookie(
 
 
 def make_request(
-        payload: Optional[dict] = None,
-        headers: Optional[dict] = None,
-        method: str = "GET",
-        url: str = "",
+    payload: Optional[dict] = None,
+    headers: Optional[dict] = None,
+    method: str = "GET",
+    url: str = "",
+    timeout: int = 10,
 ):
     if payload is None:
         payload = {}
@@ -74,19 +74,22 @@ def make_request(
             method=method,
             url=url,
             data=json.dumps(payload),
-            headers=headers
+            headers=headers,
+            timeout=timeout,
         )
 
-        #print(f"Response status: {response.status}, reason: {response.reason}")
-        data = response.json()
-        #print(f"Response data: {data}")
-        
-        return response.status_code, data
-        
-    except json.JSONDecodeError:
-        print("The response is not correct JSON.")
-        return dict()
-    except Exception as e:
-        print("Error occurred during API call:", e)
-        return  dict()
+        if response.status_code != 200:
+            raise HttpError(response.status_code, f"Error from API: {response.reason}")
 
+        # print(f"Response status: {response.status}, reason: {response.reason}")
+        data = response.json()
+        # print(f"Response data: {data}")
+
+        return response.status_code, data
+
+    except json.JSONDecodeError as exc:
+        print("The response is not correct JSON.")
+        raise HttpError(400, "") from exc
+    except Exception as exc:
+        print("Error occurred during API call:", exc)
+        raise HttpError(500, "") from exc

@@ -1,4 +1,5 @@
-from utils.repositories.base import BaseRepository
+from utils.base_repository import BaseRepository
+
 from .models import Category, Product
 
 

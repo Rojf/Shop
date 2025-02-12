@@ -17,11 +17,17 @@ django-types = "^0.20.0"
 weasyprint = "^64.0"
 stripe = "^11.5.0"
 django-redis = "^5.4.0"
+pre-commit = "^4.1.0"
+pylint-django = "^2.6.1"
+bandit = "^1.8.2"
 
 
 [tool.poetry.group.dev.dependencies]
 django-debug-toolbar = "^4.4.6"
 requests = "^2.32.3"
+pylint = "^3.3.4"
+flake8 = "^7.1.1"
+isort = "^6.0.0"
 
 [build-system]
 requires = ["poetry-core"]
@@ -30,4 +36,55 @@ build-backend = "poetry.core.masonry.api"
 [tool.pyright]
 venvPath = "."
 venv = ".venv"
-pythonVersion = "3.12.6"
+exclude = ["migrations", "node_modules", "__pycache__", "tests"]
+pythonVersion = "3.12.8"
+
+[tool.black]
+line-length = 90
+skip-string-normalization = true
+skip-magic-trailing-comma = false
+exclude = '''
+/(
+  migrations
+)/
+'''
+
+[tool.isort]
+profile = "black"
+line_length = 90
+sections = ["FUTURE", "STDLIB", "THIRDPARTY", "FIRSTPARTY", "LOCALFOLDER"]
+skip = ["*/migrations/*"]
+
+[tool.pylint]
+disable = ["C0114", "R0901", "C0115", "C0116", "R0903", "R0801"]
+max-line-length = 90
+
+[tool.pylint.MASTER]
+load-plugins = ["pylint_django"]
+django-settings-module = "config.settings"
+init-hook = """
+import sys, os
+sys.path.append('.venv/lib/python3.12/site-packages')
+sys.path.append('./cart')
+sys.path.append('./catalog')
+sys.path.append('./notification')
+sys.path.append('./orders')
+sys.path.append('./payment')
+sys.path.append('./users')
+"""
+ignore-paths = [
+  ".*/manage.py",
+  ".*/migrations/.*.py$",
+  ".venv",
+  "^.*.pyi$",
+  "^.*_prv_.*$",
+  "lib",
+  ".*tests/.*",
+]
+
+[tool.pylint.REPORTING]
+output-format = "colorized"
+
+[tool.bandit]
+exclude_dirs = ["tests", "migrations", ".venv"]
+tests = ["B101", "B102", "B110", "B404", "B509"]

@@ -1,10 +1,10 @@
-from django.contrib.auth.models import User
+from django.conf import settings
 
-from base import BaseRepository
+from utils.base_repository import BaseRepository
 
 
 class UserRepository(BaseRepository):
-    model = User
+    model = settings.AUTH_USER_MODEL
 
     @classmethod
     def create_user(cls, *args, **kwargs):

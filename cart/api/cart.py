@@ -1,7 +1,6 @@
-from django.conf import settings
-
 from decimal import Decimal
-from typing import NamedTuple
+
+from django.conf import settings
 
 
 class Cart:
@@ -86,10 +85,14 @@ class Cart:
         item["total_price"] = float(Decimal(item['product']["price"] * item["quantity"]))
 
     def __add_total_quantity_for_cart(self, cart):
-        cart["total_quantity"] = sum(item['quantity'] for item in self.cart["items"].values())
+        cart["total_quantity"] = sum(
+            item['quantity'] for item in self.cart["items"].values()
+        )
 
     def __add_total_price_for_cart(self, cart):
-        cart["total_price"] = float(sum(item['total_price'] for item in cart["items"].values())) 
+        cart["total_price"] = float(
+            sum(item['total_price'] for item in cart["items"].values())
+        )
 
     def to_dict(self):
         items = {
@@ -107,4 +110,3 @@ class Cart:
             "total_quantity": self.cart["total_quantity"],
             "total_price": self.cart["total_price"],
         }
-

@@ -1,22 +1,35 @@
-from django.contrib.admin.views.decorators import staff_member_required
-from django.contrib.staticfiles import finders
-from django.shortcuts import render, get_object_or_404
-from django.http.response import HttpResponse
-from django.template.loader import render_to_string
-from django.db import DatabaseError, transaction, IntegrityError
-from django.conf import settings
-from django.core.cache import cache
-from ninja.router import Router
-from ninja.errors import HttpError
-from ninja.pagination import paginate
 import json
 
 import weasyprint
+from django.conf import settings
+from django.contrib.admin.views.decorators import staff_member_required
+from django.contrib.staticfiles import finders
+from django.core.cache import cache
+from django.db import DatabaseError, IntegrityError, transaction
+from django.http.response import HttpResponse
+from django.shortcuts import get_object_or_404, render
+from django.template.loader import render_to_string
+from ninja.errors import HttpError
+from ninja.pagination import paginate
+from ninja.router import Router
 
-from .schemas import OrderSchemaOut, CreateOrderSchemaIn, CreateOrderSchemaOut, StatusUpdateSchemaIn, ErrorSchemaOut
-from utils.requests import make_request_with_session_cookie
 from utils.generate import generate_unique_id
-from .Repository import OrdersRepository, OrderItemRepository, UserRepository, DeliveryRepository
+from utils.requests import make_request_with_session_cookie
+
+from .Repository import (
+    DeliveryRepository,
+    OrderItemRepository,
+    OrdersRepository,
+    UserRepository,
+)
+from .schemas import (
+    CreateOrderSchemaIn,
+    CreateOrderSchemaOut,
+    ErrorSchemaOut,
+    OrderSchemaOut,
+    StatusUpdateSchemaIn,
+)
+
 # from .tasks import order_creared as celery_order_created
 
 
@@ -33,26 +46,27 @@ def view_orders(request):
         orders = OrdersRepository.filter(
             user_details__user_id=request.user.id,
             available=True,
-            prefetch_related=['user_details', 'delivery_details', 'items']
+            prefetch_related=['user_details', 'delivery_details', 'items'],
         )
 
         return orders
-    except DatabaseError:
+    except DatabaseError as exc:
         # logger.error(f"Database error occurred: {str(e)}")
-        raise HttpError(500, 'Internal Server Error')
+        raise HttpError(500, 'Internal Server Error') from exc
     except HttpError as e:
         raise e
-    except Exception as e:
+    except Exception as exc:
         # logging.error(f'{e}')
-        raise HttpError(500, 'The server couldn\'t do what you asked.')
+        raise HttpError(500, 'The server couldn\'t do what you asked.') from exc
 
 
 @router.get('{order_id}/', response={200: OrderSchemaOut, 404: ErrorSchemaOut})
 def view_order(request, order_id: int):
+    _ = request
     order_instance = get_order(
         order_id,
-        available=True, 
-        prefetch_related=['user_details', 'delivery_details', 'items']
+        available=True,
+        prefetch_related=['user_details', 'delivery_details', 'items'],
     )
 
     return 200, order_instance
@@ -60,7 +74,9 @@ def view_order(request, order_id: int):
 
 @router.post('', response={201: CreateOrderSchemaOut, 400: dict})
 def create_order(request, data: CreateOrderSchemaIn):
-    cart = make_request_with_session_cookie(request=request, url=settings.CART_API_URL+'cart/')
+    cart = make_request_with_session_cookie(
+        request=request, url=settings.CART_API_URL + 'cart/'
+    )
 
     match cart:
         case None:
@@ -73,17 +89,18 @@ def create_order(request, data: CreateOrderSchemaIn):
         cart_id=generate_unique_id(),
         status='pending',
         currency='USD',
-        shipping_cost=0,       # We need to write a function to count.
-        inclubing_taxes=0      # We need to write a function to count.
+        shipping_cost=0,  # We need to write a function to count.
+        inclubing_taxes=0,  # We need to write a function to count.
     )
 
     user_instance = UserRepository.model(
         order=order_instance,
-        user_id=generate_unique_id(), # If it is created by an anonymous user, specify the ID of the anonymous user.
+        # If it is created by an anonymous user, specify the ID of the anonymous user.
+        user_id=generate_unique_id(),
         first_name=data.first_nema,
         last_name=data.last_name,
         email=data.email,
-        phone_number=data.phone_number
+        phone_number=data.phone_number,
     )
 
     delivery_instance = DeliveryRepository.model(
@@ -94,7 +111,7 @@ def create_order(request, data: CreateOrderSchemaIn):
         address_2=data.address_1,
         postal_code=data.postal_code,
         city=data.city,
-        country=data.country
+        country=data.country,
     )
 
     order_items = [
@@ -106,11 +123,11 @@ def create_order(request, data: CreateOrderSchemaIn):
             size=item['product']['size'],
             color=item['product']['color'],
             price=item['product']['price'],
-            quantity=item['quantity']
+            quantity=item['quantity'],
         )
         for item in cart["items"].values()
     ]
-    
+
     try:
         with transaction.atomic():
             order_instance.save()
@@ -120,22 +137,19 @@ def create_order(request, data: CreateOrderSchemaIn):
 
         session_cookie = request.COOKIES.get(settings.SESSION_COOKIE_NAME)
 
-        data_cache = {
-            session_cookie: {
-                'order_id': order_instance.order_id
-            }
-        }
+        data_cache = {session_cookie: {'order_id': order_instance.order_id}}
 
         cache.set(settings.SESSION_COOKIE_NAME, json.dumps(data_cache), timeout=1_250_000)
         # return redirect(reverse('payment:process'))
 
         return 201, {'detail': 'The order is placed.'}
 
-    except IntegrityError as e:
-        return 400, {"detail": "Failed to create order. Transaction rolled back.", "error": str(e)}
-    except Exception as e:
-        return 400, {"detail": "An unexpected error occurred.", "error": str(e)}
-    
+    except IntegrityError as exc:
+        return 400, {
+            "detail": "Failed to create order. Transaction rolled back.",
+            "error": str(exc),
+        }
+
 
 def get_order(order_id: int, **kwargs):
     try:
@@ -143,12 +157,12 @@ def get_order(order_id: int, **kwargs):
         if not instance:
             # logging.error('Order does not exist.')
             raise HttpError(404, 'Order does not exist.')
-    except HttpError as e:
-        raise e
-    except Exception as e:
+    except HttpError as exc:
+        raise exc
+    except Exception as exc:
         # logging.error(f'The order status could not be displayed. Error: {e}')
-        raise HttpError(500, 'The server couldn\'t do what you asked.')
-    
+        raise HttpError(500, 'The server couldn\'t do what you asked.') from exc
+
     return instance
 
 
@@ -160,17 +174,21 @@ def update_status(order_instance, status: str):
             raise HttpError(400, 'Failed to update the status.')
     except HttpError as e:
         raise e
-    except Exception as e:
+    except Exception as exc:
         # logging.error(f'{e}')
-        raise HttpError(500, 'The server couldn\'t do what you asked.')
-    
+        raise HttpError(500, 'The server couldn\'t do what you asked.') from exc
+
     return f'The order has been {status}.'
 
 
 @router.post('{order_id}/cancel/', response={200: dict, 500: dict})
 def cancel_order(request, order_id: int):
     obj = get_order(int(order_id), available=True)
-    if request.user.is_staff and obj.status is not ['pending', 'processing'] or obj.status != 'pending':
+    if (
+        request.user.is_staff
+        and obj.status not in ['pending', 'processing']
+        or obj.status != 'pending'
+    ):
         raise HttpError(400, 'The order can\'t be cancelled.')
 
     response_data = update_status(obj, 'cancelled')
@@ -179,7 +197,8 @@ def cancel_order(request, order_id: int):
 
 
 @router.patch('{order_id}/', response={200: dict, 500: dict})
-def update_order(request,  order_id: int, data: StatusUpdateSchemaIn):
+def update_order(request, order_id: int, data: StatusUpdateSchemaIn):
+    _ = request
     obj = get_order(int(order_id), available=True)
     response_data = update_status(obj, str(data.status.value))
 
@@ -191,11 +210,13 @@ def update_order(request,  order_id: int, data: StatusUpdateSchemaIn):
 
 @router.post('{order_id}/refund/')
 def refund_order(request, order_id: int):
-    pass
+    _ = request
+    _ = order_id
 
 
 @staff_member_required
 def admin_order_pdf(request, order_id):
+    _ = request
     order = get_object_or_404(OrdersRepository.model, order_id=order_id)
     html = render_to_string('orders/order/pdf.html', {'order': order})
     response = HttpResponse(content_type='application/pdf')
@@ -211,4 +232,3 @@ def admin_order_pdf(request, order_id):
 def admin_order_detail(request, order_id):
     order = get_object_or_404(OrdersRepository.model, order_id=order_id)
     return render(request, 'admin/orders/order/detail.html', {'order': order})
-

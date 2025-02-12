@@ -32,7 +32,7 @@
     {
         "model": "api.payment",
         "pk": 4,
-        "fields": {            
+        "fields": {
             "order": 4,
             "payment_id": "PAY004",
             "paid": true,
@@ -100,4 +100,3 @@
         }
     }
 ]
-

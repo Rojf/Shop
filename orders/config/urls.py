@@ -1,9 +1,10 @@
+# pylint: disable=E0611
+
 from django.contrib import admin
 from django.urls import path
 from ninja import NinjaAPI
 
-from api.views import router, admin_order_pdf, admin_order_detail
-
+from ..api.views import admin_order_detail, admin_order_pdf, router
 
 api = NinjaAPI()
 

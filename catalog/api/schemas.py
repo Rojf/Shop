@@ -1,6 +1,7 @@
-from ninja import Schema
-from typing import Optional, List
 from datetime import datetime
+from typing import List, Optional
+
+from ninja import Schema
 
 
 class CategoriesSchema(Schema):
@@ -11,8 +12,8 @@ class CategoriesSchema(Schema):
 class ProductsSchema(Schema):
     id: int
     category: CategoriesSchema
-    name: str 
-    slug: str 
+    name: str
+    slug: str
     image_url: Optional[str]
     description: str
     price: float
@@ -25,7 +26,6 @@ class ProductsSchema(Schema):
 
 
 class DataOutSchema(Schema):
-    category:   Optional[CategoriesSchema]
+    category: Optional[CategoriesSchema]
     categories: List[CategoriesSchema]
-    products:   List[ProductsSchema]
-
+    products: List[ProductsSchema]

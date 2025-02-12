@@ -1,26 +1,6 @@
+from typing import Dict, Optional
+
 from ninja import Schema
-from typing import Optional, List, Dict
-from datetime import datetime
-
-
-class CategoriesSchema(Schema):
-    name: str
-    slug: str
-
-
-class ProductsSchema(Schema):
-    id: int
-    name: str
-    description: str
-    price: float
-    #currency: str
-    available: bool
-    category: CategoriesSchema
-    # color: Optional[str]
-    # size: Optional[str]
-    image: Optional[str]
-    created: datetime
-    updated: datetime
 
 
 class CartProductsSchema(Schema):
@@ -31,7 +11,8 @@ class CartProductsSchema(Schema):
     color: Optional[str]
     size: Optional[str]
     image_url: Optional[str]
-    
+
+
 class CartItemSchema(Schema):
     product: CartProductsSchema
     quantity: int
@@ -48,4 +29,3 @@ class RequestDataSchema(Schema):
     product_id: int
     quantity: int
     override: bool
-

@@ -1,0 +1,42 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: trailing-whitespace
+        types: [text]
+      - id: end-of-file-fixer
+        types: [text]
+      - id: detect-private-key
+        types: [text]
+      - id: check-merge-conflict
+        types: [text]
+      - id: check-added-large-files
+        args: ['--maxkb=10240']
+      - id: check-yaml
+      - id: check-json
+      - id: check-toml
+  - repo: https://github.com/psf/black
+    rev: 25.1.0
+    hooks:
+      - id: black
+  - repo: https://github.com/PyCQA/isort
+    rev: 6.0.0
+    hooks:
+      - id: isort
+  - repo: https://github.com/PyCQA/flake8
+    rev: 7.1.1
+    hooks:
+      - id: flake8
+  - repo: https://github.com/PyCQA/pylint
+    rev: v3.3.4
+    hooks:
+      - id: pylint
+        name: pylint
+        args: [
+          ".",
+        ]
+  - repo: https://github.com/PyCQA/bandit
+    rev: 1.8.2
+    hooks:
+      - id: bandit
+        args: ["-c", "pyproject.toml", "-r", "."]
