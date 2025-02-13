@@ -65,12 +65,13 @@ django-settings-module = "config.settings"
 init-hook = """
 import sys, os
 sys.path.append('.venv/lib/python3.12/site-packages')
-sys.path.append('./cart')
-sys.path.append('./catalog')
-sys.path.append('./notification')
-sys.path.append('./orders')
-sys.path.append('./payment')
-sys.path.append('./users')
+#sys.path.append(os.path.abspath("src"))
+sys.path.append(os.path.abspath("src/cart"))
+sys.path.append(os.path.abspath("src/catalog"))
+sys.path.append(os.path.abspath("src/notification"))
+sys.path.append(os.path.abspath("src/orders"))
+sys.path.append(os.path.abspath("src/payment"))
+sys.path.append(os.path.abspath("src/users"))
 """
 ignore-paths = [
   ".*/manage.py",
