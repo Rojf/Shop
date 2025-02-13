@@ -1,0 +1,26 @@
+FROM python:3.12.8-alpine
+
+RUN apk update \
+  && apk add --no-cache \
+    gcc \
+    libpq-dev \
+    python3-dev \
+  && rm -rf /var/cache/apk/*
+
+WORKDIR /app
+
+COPY requirements.txt .
+RUN pip install -r requirements.txt
+
+PYTHONUNBUFFERED=1
+
+RUN apk del \
+    gcc \
+    libpq-dev \
+    python3-dev \
+  && apk run --no-cache \
+    libpq \
+  && rm -rf /var/cache/apk/* \
+  && rm -rf .cache/pip
+
+COPY . .
