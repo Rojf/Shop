@@ -1,8 +1,7 @@
+from api.views import router
 from django.contrib import admin
 from django.urls import include, path
 from ninja import NinjaAPI
-
-from ..api.views import router
 
 api = NinjaAPI()
 

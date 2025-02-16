@@ -17,10 +17,9 @@ Including another URLconf
 
 # pylint: disable=E0611
 
+from api.views import api
 from django.contrib import admin
 from django.urls import include, path
-
-from ..api.views import api
 
 urlpatterns = [
     path('admin/', admin.site.urls),

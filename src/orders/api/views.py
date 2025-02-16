@@ -16,7 +16,7 @@ from ninja.router import Router
 from utils.generate import generate_unique_id
 from utils.requests import make_request_with_session_cookie
 
-from .Repository import (
+from .repository import (
     DeliveryRepository,
     OrderItemRepository,
     OrdersRepository,

@@ -1,0 +1,153 @@
+name: shop-microservice
+
+networks:
+  sp-net:
+    name: sp-net
+
+volumes:
+  sp_db:
+    name: sp-db-data
+
+services:
+  db:
+    image: postgres:${POSTGRES_TAG:-17.2}
+    container_name: postgres_db
+    volumes:
+      - sp_db:/var/lib/postgresql/data/
+    env_file:
+      - ../../example.env
+    restart: unless-stopped
+    healthcheck:
+      test: psql -h 0.0.0.0 -U ${POSTGRES_USER:-user-shop} -d ${POSTGRES_DB:-shop} -c 'SELECT 1;'
+      start_period: 5s
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    networks:
+      - sp-net
+
+  cart-service:
+    container_name: cart_service
+    build:
+      context: ../../
+      dockerfile: src/cart/Dockerfile
+    depends_on:
+      db:
+        condition: service_healthy
+    env_file:
+      - ../../src/cart/example.env
+    restart: unless-stopped
+    # healthcheck:
+    #   test: ["CMD", "curl", "-f", "http://localhost:8002/health"]
+    #   interval: 10s
+    #   retries: 5
+    #   timeout: 3s
+    ports:
+      - 8001:8000
+    networks:
+      - sp-net
+
+  catalog-service:
+    container_name: catalog_service
+    build:
+      context: ../../
+      dockerfile: src/catalog/Dockerfile
+    depends_on:
+      db:
+        condition: service_healthy
+    env_file:
+      - ../../src/catalog/example.env
+    restart: unless-stopped
+    # healthcheck:
+    #   test: ["CMD", "curl", "-f", "http://localhost:8002/health"]
+    #   interval: 10s
+    #   retries: 5
+    #   timeout: 3s
+    ports:
+      - 8002:8000
+    networks:
+      - sp-net
+
+  notification-service:
+    container_name: notification_service
+    build:
+      context: ../../
+      dockerfile: src/notification/Dockerfile
+    depends_on:
+      db:
+        condition: service_healthy
+    env_file:
+      - ../../src/notification/example.env
+    restart: unless-stopped
+    # healthcheck:
+    #   test: ["CMD", "curl", "-f", "http://localhost:8002/health"]
+    #   interval: 10s
+    #   retries: 5
+    #   timeout: 3s
+    ports:
+      - 8003:8000
+    networks:
+      - sp-net
+
+  orders-service:
+    container_name: orders_service
+    build:
+      context: ../../
+      dockerfile: src/orders/Dockerfile
+    depends_on:
+      db:
+        condition: service_healthy
+    env_file:
+      - ../../src/orders/example.env
+    restart: unless-stopped
+    # healthcheck:
+    #   test: ["CMD", "curl", "-f", "http://localhost:8002/health"]
+    #   interval: 10s
+    #   retries: 5
+    #   timeout: 3s
+    ports:
+      - 8004:8000
+    networks:
+      - sp-net
+
+  payment-service:
+    container_name: payment_service
+    build:
+      context: ../../
+      dockerfile: src/payment/Dockerfile
+    depends_on:
+      db:
+        condition: service_healthy
+    env_file:
+      - ../../src/payment/example.env
+    restart: unless-stopped
+    # healthcheck:
+    #   test: ["CMD", "curl", "-f", "http://localhost:8002/health"]
+    #   interval: 10s
+    #   retries: 5
+    #   timeout: 3s
+    ports:
+      - 8005:8000
+    networks:
+      - sp-net
+
+  users-service:
+    container_name: users_service
+    build:
+      context: ../../
+      dockerfile: src/users/Dockerfile
+    depends_on:
+      db:
+        condition: service_healthy
+    env_file:
+      - ../../src/users/example.env
+    restart: unless-stopped
+    # healthcheck:
+    #   test: ["CMD", "curl", "-f", "http://localhost:8002/health"]
+    #   interval: 10s
+    #   retries: 5
+    #   timeout: 3s
+    ports:
+      - 8006:8000
+    networks:
+      - sp-net
