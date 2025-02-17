@@ -1,13 +1,13 @@
 from django.shortcuts import get_object_or_404
-from ninja import NinjaAPI
+from ninja import Router
 
 from .repository import CategoryRepository, ProductRepository
 from .schemas import DataOutSchema, ProductsSchema
 
-api = NinjaAPI()
+router = Router()
 
 
-@api.get("catalog/", response=DataOutSchema)
+@router.get("", response=DataOutSchema)
 def product_list(request, category_slug: str):
     _ = request
     category = None
@@ -21,7 +21,7 @@ def product_list(request, category_slug: str):
     return {'category': category, 'categories': categories, 'products': products}
 
 
-@api.get("catalog/{product_id}/", url_name="product_detail", response=ProductsSchema)
+@router.get("{product_id}/", url_name="product_detail", response=ProductsSchema)
 def product_detail(request, product_id: int):
     _ = request
     product = get_object_or_404(ProductRepository.model, id=product_id, available=True)

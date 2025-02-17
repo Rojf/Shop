@@ -1,19 +1,19 @@
 name: shop-microservice
 
 networks:
-  sp-net:
-    name: sp-net
+  shop_net:
+    name: shop_net
 
 volumes:
-  sp_db:
-    name: sp-db-data
+  shop_db:
+    name: shop_db_data
 
 services:
   db:
     image: postgres:${POSTGRES_TAG:-17.2}
     container_name: postgres_db
     volumes:
-      - sp_db:/var/lib/postgresql/data/
+      - shop_db:/var/lib/postgresql/data/
     env_file:
       - ../../example.env
     restart: unless-stopped
@@ -24,7 +24,7 @@ services:
       timeout: 5s
       retries: 3
     networks:
-      - sp-net
+      - shop_net
 
   cart-service:
     container_name: cart_service
@@ -36,16 +36,19 @@ services:
         condition: service_healthy
     env_file:
       - ../../src/cart/example.env
+      - ../../example.env
     restart: unless-stopped
-    # healthcheck:
-    #   test: ["CMD", "curl", "-f", "http://localhost:8002/health"]
-    #   interval: 10s
-    #   retries: 5
-    #   timeout: 3s
-    ports:
-      - 8001:8000
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.cart.rule=PathPrefix(`/api/v1/cart`)"
+      - "traefik.http.services.cart-service.loadbalancer.server.port=8000"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/api/v1/cart"]
+      interval: 10s
+      retries: 5
+      timeout: 3s
     networks:
-      - sp-net
+      - shop_net
 
   catalog-service:
     container_name: catalog_service
@@ -57,37 +60,43 @@ services:
         condition: service_healthy
     env_file:
       - ../../src/catalog/example.env
+      - ../../example.env
     restart: unless-stopped
-    # healthcheck:
-    #   test: ["CMD", "curl", "-f", "http://localhost:8002/health"]
-    #   interval: 10s
-    #   retries: 5
-    #   timeout: 3s
-    ports:
-      - 8002:8000
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.catalog.rule=PathPrefix(`/api/v1/catalog`)"
+      - "traefik.http.services.catalog-service.loadbalancer.server.port=8000"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/api/v1/catalog/health"]
+      interval: 10s
+      retries: 5
+      timeout: 3s
     networks:
-      - sp-net
+      - shop_net
 
-  notification-service:
-    container_name: notification_service
-    build:
-      context: ../../
-      dockerfile: src/notification/Dockerfile
-    depends_on:
-      db:
-        condition: service_healthy
-    env_file:
-      - ../../src/notification/example.env
-    restart: unless-stopped
-    # healthcheck:
-    #   test: ["CMD", "curl", "-f", "http://localhost:8002/health"]
-    #   interval: 10s
-    #   retries: 5
-    #   timeout: 3s
-    ports:
-      - 8003:8000
-    networks:
-      - sp-net
+  # notification-service:
+  #   container_name: notification_service
+  #   build:
+  #     context: ../../
+  #     dockerfile: src/notification/Dockerfile
+  #   depends_on:
+  #     db:
+  #       condition: service_healthy
+  #   env_file:
+  #     - ../../src/notification/example.env
+  #     - ../../example.env
+  #   restart: unless-stopped
+  #   labels:
+  #     - "traefik.enable=true"
+  #     - "traefik.http.routers.notification.rule=PathPrefix(`/api/v1/notification`)"
+  #     - "traefik.http.services.notification-service.loadbalancer.server.port=8000"
+  #   healthcheck:
+  #     test: ["CMD", "curl", "-f", "http://localhost:8000/api/v1/notification/health"]
+  #     interval: 10s
+  #     retries: 5
+  #     timeout: 3s
+  #   networks:
+  #     - shop_net
 
   orders-service:
     container_name: orders_service
@@ -99,16 +108,19 @@ services:
         condition: service_healthy
     env_file:
       - ../../src/orders/example.env
+      - ../../example.env
     restart: unless-stopped
-    # healthcheck:
-    #   test: ["CMD", "curl", "-f", "http://localhost:8002/health"]
-    #   interval: 10s
-    #   retries: 5
-    #   timeout: 3s
-    ports:
-      - 8004:8000
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.orders.rule=PathPrefix(`/api/v1/orders`)"
+      - "traefik.http.services.orders-service.loadbalancer.server.port=8000"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/api/v1/orders/health"]
+      interval: 10s
+      retries: 5
+      timeout: 3s
     networks:
-      - sp-net
+      - shop_net
 
   payment-service:
     container_name: payment_service
@@ -120,34 +132,58 @@ services:
         condition: service_healthy
     env_file:
       - ../../src/payment/example.env
+      - ../../example.env
     restart: unless-stopped
-    # healthcheck:
-    #   test: ["CMD", "curl", "-f", "http://localhost:8002/health"]
-    #   interval: 10s
-    #   retries: 5
-    #   timeout: 3s
-    ports:
-      - 8005:8000
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.payment.rule=PathPrefix(`/api/v1/payment`)"
+      - "traefik.http.services.payment-service.loadbalancer.server.port=8000"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/api/v1/payment/health"]
+      interval: 10s
+      retries: 5
+      timeout: 3s
     networks:
-      - sp-net
+      - shop_net
 
-  users-service:
-    container_name: users_service
-    build:
-      context: ../../
-      dockerfile: src/users/Dockerfile
-    depends_on:
-      db:
-        condition: service_healthy
-    env_file:
-      - ../../src/users/example.env
-    restart: unless-stopped
-    # healthcheck:
-    #   test: ["CMD", "curl", "-f", "http://localhost:8002/health"]
-    #   interval: 10s
-    #   retries: 5
-    #   timeout: 3s
+  # users-service:
+  #   container_name: users_service
+  #   build:
+  #     context: ../../
+  #     dockerfile: src/users/Dockerfile
+  #   depends_on:
+  #     db:
+  #       condition: service_healthy
+  #   env_file:
+  #     - ../../src/users/example.env
+  #     - ../../example.env
+  #   restart: unless-stopped
+  #   labels:
+  #     - "traefik.enable=true"
+  #     - "traefik.http.routers.users.rule=PathPrefix(`/api/v1/users`)"
+  #     - "traefik.http.services.users-service.loadbalancer.server.port=8000"
+  #   healthcheck:
+  #     test: ["CMD", "curl", "-f", "http://localhost:8002/api/v1/users/health"]
+  #     interval: 10s
+  #     retries: 5
+  #     timeout: 3s
+  #   networks:
+  #     - shop_net
+
+  traefik:
+    image: traefik:v3.3
+    restart: always
+    command:
+      - "--api.dashboard=true"
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.web-secure.address=:443"
     ports:
-      - 8006:8000
+      - "80:80"
+      - "443:443"
+      - "8080:8080"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
     networks:
-      - sp-net
+      - shop_net

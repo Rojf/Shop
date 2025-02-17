@@ -20,8 +20,8 @@ from django.contrib import admin
 from django.urls import path
 from ninja import NinjaAPI
 
-api = NinjaAPI()
-api.add_router('payment/', router)
+api = NinjaAPI(openapi_url="api/v1/payment/openapi.json", docs_url="api/v1/payment/docs")
+api.add_router('api/v1/payment/', router)
 
 
-urlpatterns = [path('admin/', admin.site.urls), path('api/v1/', api.urls)]
+urlpatterns = [path('admin/', admin.site.urls), path('', api.urls)]

@@ -3,6 +3,7 @@ FROM python:3.12.8-alpine
 RUN apk update \
   && apk add --no-cache \
     gcc \
+    curl \
     libpq-dev \
     python3-dev \
   && rm -rf /var/cache/apk/*

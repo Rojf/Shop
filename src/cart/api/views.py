@@ -8,14 +8,14 @@ from .schemas import CartSchema, RequestDataSchema
 router = Router()
 
 
-@router.get("cart/", url_name="cart_detail", response=CartSchema)
+@router.get("", url_name="cart_detail", response=CartSchema)
 def view_cart(request):
     cart = Cart(request)
 
     return cart.to_dict()
 
 
-@router.post("cart/items/", response=CartSchema)
+@router.post("items/", response=CartSchema)
 def add_to_cart(request, data: RequestDataSchema):
     cart = Cart(request)
 
@@ -31,7 +31,7 @@ def add_to_cart(request, data: RequestDataSchema):
     return cart.to_dict()
 
 
-@router.delete("cart/items/{int:product_id}/", response=CartSchema)
+@router.delete("items/{int:product_id}/", response=CartSchema)
 def remove_from_cart(request, product_id: int):
     cart = Cart(request)
 

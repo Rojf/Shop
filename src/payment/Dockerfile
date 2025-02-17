@@ -4,6 +4,7 @@ RUN apk update \
   && apk add --no-cache \
     gcc \
     libpq-dev \
+    curl \
     python3-dev \
   && rm -rf /var/cache/apk/*
 
