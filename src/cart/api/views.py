@@ -1,3 +1,4 @@
+from django.conf import settings
 from ninja import Router
 
 from utils.requests import make_request
@@ -22,7 +23,7 @@ def add_to_cart(request, data: RequestDataSchema):
     product_id = data.product_id
 
     _, product = make_request(
-        method="GET", url=f"http://127.0.0.1:8001/api/v1/catalog/{product_id}/"
+        method="GET", url=f"{settings.CATALOG_API_URL}/{product_id}/"
     )
 
     cart.add(product=product, quantity=data.quantity, override_quantity=data.override)

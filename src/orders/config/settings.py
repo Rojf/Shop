@@ -128,8 +128,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 NINJA_PAGINATION_PER_PAGE = 20
 
-CART_API_URL = 'http://127.0.0.1:8000/api/v1/'
-
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
@@ -139,3 +137,21 @@ CACHES = {
         },
     }
 }
+
+# If the project isn't running through Docker, you'll need to specify a url.
+#         VVVVVVVVVVVVVV
+# "http://127.0.0.1:8002/api/v1/catalog/"
+
+CART_API_URL = os.getenv('CART_API_URL', 'http://cart-service:8000/api/v1/cart')
+SHIPPING_API_URL = os.getenv(
+    'SHIPPING_API_URL', 'http://shipping-service:8000/api/v1/shipping'
+)
+PAYMENT_API_URL = os.getenv(
+    'PAYMENT_API_URL', 'http://payment-service:8000/api/v1/payment'
+)
+CATALOG_API_URL = os.getenv(
+    'CATALOG_API_URL', 'http://catalog-service:8000/api/v1/catalog'
+)
+NOTIFICATION_API_URL = os.getenv(
+    'NOTIFICATION_API_URL', 'http://notification-service:8000/api/v1/notification'
+)

@@ -26,7 +26,7 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv("DEBUG", "False") == "True"
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -130,3 +130,10 @@ CART_SESSION_ID = 'cart'
 SESSION_ENGINE = "django.contrib.sessions.backends.db"  # Использование базы данных
 SESSION_COOKIE_AGE = 1209600  # Срок действия cookie (2 недели)
 SESSION_SAVE_EVERY_REQUEST = True  # Сохранение сессии при каждом запросе
+
+
+# If the project isn't running through Docker, you'll need to specify a url.
+#         VVVVVVVVVVVVVV
+# "http://127.0.0.1:8002/api/v1/catalog/"
+
+CATALOG_API_URL = os.getenv("CATALOG_API_URL", "http://127.0.0.1:8002/api/v1/catalog")

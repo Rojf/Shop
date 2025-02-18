@@ -74,9 +74,7 @@ def view_order(request, order_id: int):
 
 @router.post('', response={201: CreateOrderSchemaOut, 400: dict})
 def create_order(request, data: CreateOrderSchemaIn):
-    cart = make_request_with_session_cookie(
-        request=request, url=settings.CART_API_URL + 'cart/'
-    )
+    cart = make_request_with_session_cookie(request=request, url=settings.CART_API_URL)
 
     match cart:
         case None:
