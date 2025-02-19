@@ -29,10 +29,3 @@ class DataOutSchema(Schema):
     category: Optional[CategoriesSchema]
     categories: List[CategoriesSchema]
     products: List[ProductsSchema]
-
-
-class RequestDataSchema(Schema):
-    category_slug: Optional[str] = None
-
-    def resolve_lower_category_slug(self):
-        return self.category_slug.lower() if self.category_slug else None

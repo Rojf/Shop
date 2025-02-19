@@ -1,17 +1,19 @@
+from typing import Optional
+
 from django.shortcuts import get_object_or_404
 from ninja import Router
 
 from .repository import CategoryRepository, ProductRepository
-from .schemas import DataOutSchema, ProductsSchema, RequestDataSchema
+from .schemas import DataOutSchema, ProductsSchema
 
 router = Router()
 
 
 @router.get("", response=DataOutSchema)
-def product_list(request, data: RequestDataSchema):
+def product_list(request, category_slug: Optional[str] = None):
     _ = request
     category = None
-    category_slug = data.category_slug
+    category_slug = category_slug.lower() if category_slug else None
     categories = CategoryRepository.all()
     products = ProductRepository.filter(available=True)
 
