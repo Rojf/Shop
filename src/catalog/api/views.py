@@ -2,15 +2,16 @@ from django.shortcuts import get_object_or_404
 from ninja import Router
 
 from .repository import CategoryRepository, ProductRepository
-from .schemas import DataOutSchema, ProductsSchema
+from .schemas import DataOutSchema, ProductsSchema, RequestDataSchema
 
 router = Router()
 
 
 @router.get("", response=DataOutSchema)
-def product_list(request, category_slug: str):
+def product_list(request, data: RequestDataSchema):
     _ = request
     category = None
+    category_slug = data.category_slug
     categories = CategoryRepository.all()
     products = ProductRepository.filter(available=True)
 

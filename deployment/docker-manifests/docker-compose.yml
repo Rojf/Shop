@@ -5,17 +5,21 @@ networks:
     name: shop_net
 
 volumes:
+  redis_data:
+    name: shop_redis_data
   shop_db:
     name: shop_db_data
 
 services:
   db:
     image: postgres:${POSTGRES_TAG:-17.2}
-    container_name: postgres_db
+    container_name: postgres
     volumes:
       - shop_db:/var/lib/postgresql/data/
     env_file:
       - ../../example.env
+    labels:
+      - "traefik.enable=false"
     restart: unless-stopped
     healthcheck:
       test: psql -h 0.0.0.0 -U ${POSTGRES_USER:-user-shop} -d ${POSTGRES_DB:-shop} -c 'SELECT 1;'
@@ -23,6 +27,21 @@ services:
       interval: 10s
       timeout: 5s
       retries: 3
+    networks:
+      - shop_net
+
+  redis:
+    image: redis/redis-stack:${REDIS_TAG:-7.4.0-v3}
+    container_name: redis
+    volumes:
+      - redis_data:/data
+    env_file:
+      - ../../example.env
+    labels:
+      - "traefik.enable=false"
+    restart: unless-stopped
+    ports:
+      - "8001:8001"
     networks:
       - shop_net
 
@@ -139,7 +158,7 @@ services:
       - "traefik.http.routers.payment.rule=PathPrefix(`/api/v1/payment`)"
       - "traefik.http.services.payment-service.loadbalancer.server.port=8000"
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8000/api/v1/payment/health"]
+      test: ["CMD", "curl", "-f", "http://localhost:8000/api/v1/payment/docs"]
       interval: 10s
       retries: 5
       timeout: 3s
