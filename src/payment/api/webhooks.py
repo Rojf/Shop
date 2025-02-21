@@ -1,12 +1,16 @@
 import stripe
 from django.conf import settings
-from django.http import HttpResponse
-from django.views.decorators.csrf import csrf_exempt
+from ninja.errors import HttpError
+from ninja.router import Router
 
-from utils.requests import make_request
+from utils.http_client import make_request
+
+from .repository import PaymentRepository
+
+router = Router()
 
 
-@csrf_exempt
+@router.post("webhook/")
 def stripe_webhook(request):
     payload = request.body
     sig_header = request.META['HTTP_STRIPE_SIGNATURE']
@@ -17,22 +21,26 @@ def stripe_webhook(request):
             payload, sig_header, settings.STRIPE_WEBHOOK_SECRET
         )
     except ValueError:
-        return HttpResponse(status=400)
+        return HttpError(400, "Invalid payload")
     except stripe.SignatureVerificationError:
-        return HttpResponse(sattus=400)
+        return HttpError(400, "Invalid signature")
 
     if event.type == 'checkout.session.completed':
-        session = event.data.object
+        session = event['data']['object']
         if session.mode == 'payment' and session.payment_status == 'paid':
             data = {
                 "paid": True,
-                "stripe_id": session.payment_intent,
             }
 
             make_request(
                 method="PATCH",
                 payload=data,
-                url=settings.ORDER_API_URL + 'orders/' + session.client_reference_id,
+                url=settings.ORDER_API_URL + '/' + session.client_reference_id,
             )
 
-    return HttpResponse(status=200)
+            instance = PaymentRepository.get(order_id=session.client_reference_id)
+            PaymentRepository.update(
+                instance, transaction_id=session.payment_intent, status="paid"
+            )
+
+    return {"status": "success"}

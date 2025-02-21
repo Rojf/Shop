@@ -21,6 +21,8 @@ class Order(models.Model):
     status = models.CharField(
         max_length=1, choices=OrderStatus.choices, default=OrderStatus.PENDING
     )
+    amount = models.DecimalField(max_digits=10, decimal_places=2)
+    paid = models.BooleanField(default=False)
     currency = models.CharField(max_length=5)
     shipping_cost = models.PositiveIntegerField()
     inclubing_taxes = models.PositiveIntegerField()
@@ -88,22 +90,6 @@ class Delivery(models.Model):
     )
     city = models.CharField(max_length=150)
     country = models.CharField(max_length=250)
-
-
-class Payment(models.Model):
-    class PaymentType(models.TextChoices):
-        STRIPE = 'S', 'Stripe'
-        PAYPAL = 'P', 'Paypal'
-        APPLEPAY = 'A', 'Applepay'
-
-    order = models.ForeignKey(
-        Order, related_name='payment_details', on_delete=models.CASCADE
-    )
-    payment_id = models.CharField(max_length=250, blank=True)
-    paid = models.BooleanField(default=False)
-    payment_type = models.CharField(
-        max_length=1, choices=PaymentType.choices, default=PaymentType.STRIPE
-    )
 
 
 class OrderItem(models.Model):

@@ -20,6 +20,7 @@ class CartItemSchema(Schema):
 
 
 class CartSchema(Schema):
+    cart_id: int
     items: Optional[Dict[str, CartItemSchema]] = {}
     total_quantity: int
     total_price: float

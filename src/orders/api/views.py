@@ -14,7 +14,8 @@ from ninja.pagination import paginate
 from ninja.router import Router
 
 from utils.generate import generate_unique_id
-from utils.requests import make_request_with_session_cookie
+from utils.http_client import make_request_with_session_cookie
+from utils.sessions_utils import get_session_from_redis
 
 from .repository import (
     DeliveryRepository,
@@ -40,11 +41,11 @@ router = Router()
 @paginate
 def view_orders(request):
     try:
-        if not request.user.is_authenticated:
-            raise HttpError(401, 'Unauthorized')
+        # if not request.user.is_authenticated:
+        #     raise HttpError(401, 'Unauthorized')
 
         orders = OrdersRepository.filter(
-            user_details__user_id=request.user.id,
+            #    user_details__user_id=request.user.id,
             available=True,
             prefetch_related=['user_details', 'delivery_details', 'items'],
         )
@@ -84,8 +85,10 @@ def create_order(request, data: CreateOrderSchemaIn):
 
     order_instance = OrdersRepository.model(
         order_id=generate_unique_id(),
-        cart_id=generate_unique_id(),
+        cart_id=cart['cart_id'],
         status='pending',
+        amount=cart['total_price'],
+        paid=False,
         currency='USD',
         shipping_cost=0,  # We need to write a function to count.
         inclubing_taxes=0,  # We need to write a function to count.
@@ -135,9 +138,13 @@ def create_order(request, data: CreateOrderSchemaIn):
 
         session_cookie = request.COOKIES.get(settings.SESSION_COOKIE_NAME)
 
-        data_cache = {session_cookie: {'order_id': order_instance.order_id}}
+        new_data_cache = {session_cookie: {'order_id': order_instance.order_id}}
 
-        cache.set(settings.SESSION_COOKIE_NAME, json.dumps(data_cache), timeout=1_250_000)
+        session_data = get_session_from_redis(request)
+
+        session_data.update(new_data_cache)
+
+        cache.set(session_cookie, json.dumps(session_data), timeout=1_250_000)
         # return redirect(reverse('payment:process'))
 
         return 201, {'detail': 'The order is placed.'}

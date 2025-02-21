@@ -2,6 +2,8 @@ from decimal import Decimal
 
 from django.conf import settings
 
+from utils.generate import generate_unique_id
+
 
 class Cart:
     def __init__(self, request):
@@ -14,6 +16,9 @@ class Cart:
         cart = self.session.get(settings.CART_SESSION_ID)
         if not cart:
             cart = self.session[settings.CART_SESSION_ID] = {
+                # I need to check if cart_id exists in the session.
+                # If there is, then i need to re-generate the id.
+                "cart_id": generate_unique_id(),
                 "items": {},
                 "total_quantity": 0,
                 "total_price": 0.0,
@@ -106,6 +111,7 @@ class Cart:
         }
 
         return {
+            "cart_id": self.cart['cart_id'],
             "items": items,
             "total_quantity": self.cart["total_quantity"],
             "total_price": self.cart["total_price"],

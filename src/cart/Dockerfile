@@ -28,5 +28,6 @@ RUN apk del \
 
 COPY src/cart/ /usr/src/app
 COPY src/utils/ /usr/src/app/utils/
+COPY src/services/ /usr/src/app/services/
 
 CMD ["poetry", "run", "python", "manage.py", "runserver", "0.0.0.0:8000"]

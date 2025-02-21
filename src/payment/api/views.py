@@ -1,71 +1,37 @@
-import json
-from decimal import Decimal
-
-import stripe
-from django.conf import settings
-from django.core.cache import cache
 from ninja import Router
-from ninja.errors import HttpError
 
-from utils.requests import make_request
+from services.order_service import fetch_order_details
+from services.payment_service import (
+    build_stripe_session_data,
+    create_stripe_checkout_session,
+)
+from utils.generate import generate_unique_id
+from utils.sessions_utils import get_session_from_redis
 
-stripe.api_key = settings.STRIPE_SECRET_KEY
-stripe.api_version = settings.STRIPE_API_VERSION
-
+from .repository import PaymentRepository
+from .schemas import PaymentCreateSchema
 
 router = Router()
 
 
 @router.post('process/')
-def payment_process(request):
-    session_cookie = request.COOKIES.get(settings.SESSION_COOKIE_NAME)
-    redis_sessions = cache.get(settings.SESSION_COOKIE_NAME)
-    load_session = json.loads(redis_sessions).get(session_cookie)
+def payment_process(request, payment_data: PaymentCreateSchema):
+    redis_session_data = get_session_from_redis(request)
 
-    order_id = load_session.get('order_id')
-    status, order = make_request(
-        url=settings.ORDER_API_URL + f'orders/{order_id}/', method='GET'
+    order_id = redis_session_data.get('order_id', '')
+    order = fetch_order_details(order_id)
+
+    session_data = build_stripe_session_data(order)
+
+    PaymentRepository.create(
+        payment_id=generate_unique_id(),
+        order_id=order_id,
+        user_id=generate_unique_id(),
+        amount=order.get('amount', 0.00),
+        currency=order.get('currency', 'usd'),
+        status="pending",
+        transaction_id='None',
+        **payment_data.dict()
     )
 
-    if status != 200:
-        raise HttpError(status, '')
-
-    success_url = 'http://example.com/completed/'
-    cancel_url = 'http://example.com/canceled/'
-
-    session_data = {
-        'mode': 'payment',
-        'client_reference_id': order.get('order_id'),
-        'success_url': success_url,
-        'cancel_url': cancel_url,
-        'line_items': [],
-    }
-
-    for item in order.get('items', []):
-        print("image", item.get('image_url', ''))
-        session_data['line_items'].append(
-            {
-                'price_data': {
-                    'unit_amount': int(Decimal(str(item.get('price'))) * Decimal('100')),
-                    'currency': 'usd',
-                    'product_data': {
-                        'name': item.get('name'),
-                        'images': (
-                            [item.get('image_url')]
-                            if item.get('image_url')
-                            else [
-                                (
-                                    'https://us.sunspel.com/cdn/shop/'
-                                    'files/mtsh0181-bkaa-1.jpg?v=1720096619'
-                                )
-                            ]
-                        ),
-                    },
-                },
-                'quantity': item.get('quantity'),
-            }
-        )
-
-    session = stripe.checkout.Session.create(**session_data)
-
-    return session.url  # redirect 303
+    return {"payment_url": create_stripe_checkout_session(session_data)}

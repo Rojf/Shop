@@ -132,7 +132,7 @@ STRIPE_PUBLISHABLE_KEY = os.getenv('STRIPE_PUBLISHABLE_KEY')
 STRIPE_SECRET_KEY = os.getenv('STRIPE_SECRET_KEY')
 STRIPE_WEBHOOK_SECRET = os.getenv('STRIPE_WEBHOOK_SECRET')
 
-ORDER_API_URL = 'http://127.0.0.1:8002/api/v1/'
+ORDER_API_URL = 'http://orders-service:8000/api/v1/orders/'
 
 
 # SESSION_ENGINE = "django.contrib.sessions.backends.cache"
@@ -144,7 +144,7 @@ CACHES = {
         "LOCATION": "redis://redis:6379/0",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
-            # "SERIALIZER": "django_redis.serializers.json.JSONSerializer",
+            "SERIALIZER": "django_redis.serializers.json.JSONSerializer",
         },
     }
 }

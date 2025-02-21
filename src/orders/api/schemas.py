@@ -45,6 +45,7 @@ class OrderSchemaOut(Schema):
     order_id: int
     status: str
     currency: str
+    amount: float
     shipping_cost: int
     inclubing_taxes: int
     created: datetime
