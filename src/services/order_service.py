@@ -10,7 +10,7 @@ def fetch_order_details(order_id: int) -> dict:
     if not order_id:
         raise HttpError(400, "Order ID is required")
 
-    url = f"{settings.ORDER_API_URL}/{order_id}/"
+    url = f"{settings.ORDER_API_URL}{order_id}/"
     order = make_request(url=url, method="GET")
 
     if not order:

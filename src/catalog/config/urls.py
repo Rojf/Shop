@@ -17,16 +17,17 @@ Including another URLconf
 
 # pylint: disable=E0611
 
-from api.views import router
 from django.contrib import admin
 from django.urls import include, path
 from ninja import NinjaAPI
 
-api = NinjaAPI(openapi_url="api/v1/catalog/openapi.json", docs_url="api/v1/catalog/docs")
-api.add_router("api/v1/catalog", router)
+from api.views import router
+
+api = NinjaAPI(openapi_url="v1/catalog/openapi.json", docs_url="v1/catalog/docs")
+api.add_router("v1/catalog", router)
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('__debug__/', include('debug_toolbar.urls')),
+    path('v1/catalog/admin/', admin.site.urls),
+    path('v1/catalog/__debug__/', include('debug_toolbar.urls')),
     path('', api.urls),
 ]

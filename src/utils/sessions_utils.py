@@ -12,13 +12,9 @@ def get_session_from_redis(request: HttpRequest) -> Dict:
 
     session_cookie = request.COOKIES.get(settings.SESSION_COOKIE_NAME)
     if not session_cookie:
-        raise HttpError(
-            500, "Internal Server Error: No session cookie found"
-        )  # Или можно вернуть {}
+        raise HttpError(500, "Internal Server Error: No session cookie found")
 
-    redis_sessions = cache.get(settings.SESSION_COOKIE_NAME, '{}')
-    # if redis_sessions is None:
-    #     raise HttpError(500, "Internal Server Error: Session data not found in cache")
+    redis_sessions = cache.get(session_cookie, '{}')
 
     try:
         session_data = json.loads(redis_sessions)

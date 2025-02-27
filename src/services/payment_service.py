@@ -1,3 +1,4 @@
+import time
 from decimal import Decimal
 from typing import Dict, Optional
 
@@ -21,6 +22,7 @@ def build_stripe_session_data(order: Dict) -> Dict:
         'client_reference_id': order.get('order_id'),
         'success_url': success_url,
         'cancel_url': cancel_url,
+        'expires_at': int(time.time() + (60 * 30)),
         'line_items': [],
     }
 

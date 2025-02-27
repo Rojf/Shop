@@ -1,3 +1,4 @@
+from decimal import Decimal
 from typing import Dict, Optional
 
 from ninja import Schema
@@ -6,7 +7,7 @@ from ninja import Schema
 class CartProductsSchema(Schema):
     id: int
     name: str
-    price: float
+    price: Decimal
     # currency: str
     color: Optional[str]
     size: Optional[str]
@@ -16,14 +17,13 @@ class CartProductsSchema(Schema):
 class CartItemSchema(Schema):
     product: CartProductsSchema
     quantity: int
-    total_price: float
+    total_price: Decimal
 
 
 class CartSchema(Schema):
-    cart_id: int
     items: Optional[Dict[str, CartItemSchema]] = {}
     total_quantity: int
-    total_price: float
+    total_price: Decimal
 
 
 class RequestDataSchema(Schema):

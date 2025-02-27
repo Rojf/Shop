@@ -1,8 +1,6 @@
-from decimal import Decimal
+from decimal import ROUND_DOWN, Decimal
 
 from django.conf import settings
-
-from utils.generate import generate_unique_id
 
 
 class Cart:
@@ -18,7 +16,6 @@ class Cart:
             cart = self.session[settings.CART_SESSION_ID] = {
                 # I need to check if cart_id exists in the session.
                 # If there is, then i need to re-generate the id.
-                "cart_id": generate_unique_id(),
                 "items": {},
                 "total_quantity": 0,
                 "total_price": 0.0,
@@ -35,6 +32,8 @@ class Cart:
         :return:
         """
         product_id = str(product["id"])
+        quantity = quantity if quantity else 1
+
         if product_id not in self.cart["items"]:
             self.cart["items"][product_id] = {
                 "product": product,
@@ -87,7 +86,9 @@ class Cart:
         self.__save()
 
     def __add_total_price_for_product(self, item):
-        item["total_price"] = float(Decimal(item['product']["price"] * item["quantity"]))
+        item["total_price"] = (
+            Decimal(str(item["product"]["price"])) * Decimal(item["quantity"])
+        ).quantize(Decimal("0.01"), rounding=ROUND_DOWN)
 
     def __add_total_quantity_for_cart(self, cart):
         cart["total_quantity"] = sum(
@@ -95,9 +96,9 @@ class Cart:
         )
 
     def __add_total_price_for_cart(self, cart):
-        cart["total_price"] = float(
-            sum(item['total_price'] for item in cart["items"].values())
-        )
+        cart["total_price"] = Decimal(
+            sum(Decimal(str(item["total_price"])) for item in cart["items"].values())
+        ).quantize(Decimal("0.01"), rounding=ROUND_DOWN)
 
     def to_dict(self):
         items = {
@@ -111,7 +112,6 @@ class Cart:
         }
 
         return {
-            "cart_id": self.cart['cart_id'],
             "items": items,
             "total_quantity": self.cart["total_quantity"],
             "total_price": self.cart["total_price"],

@@ -30,7 +30,7 @@ def payment_process(request, payment_data: PaymentCreateSchema):
         amount=order.get('amount', 0.00),
         currency=order.get('currency', 'usd'),
         status="pending",
-        transaction_id='None',
+        transaction_id=None,
         **payment_data.dict()
     )
 

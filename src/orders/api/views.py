@@ -5,7 +5,7 @@ from django.conf import settings
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.staticfiles import finders
 from django.core.cache import cache
-from django.db import DatabaseError, IntegrityError, transaction
+from django.db import IntegrityError, transaction
 from django.http.response import HttpResponse
 from django.shortcuts import get_object_or_404, render
 from django.template.loader import render_to_string
@@ -25,10 +25,8 @@ from .repository import (
 )
 from .schemas import (
     CreateOrderSchemaIn,
-    CreateOrderSchemaOut,
-    ErrorSchemaOut,
     OrderSchemaOut,
-    StatusUpdateSchemaIn,
+    UpdateOrderSchemaIn,
 )
 
 # from .tasks import order_creared as celery_order_created
@@ -40,32 +38,24 @@ router = Router()
 @router.get('', response=list[OrderSchemaOut])
 @paginate
 def view_orders(request):
-    try:
-        # if not request.user.is_authenticated:
-        #     raise HttpError(401, 'Unauthorized')
+    _ = request
+    # if not request.user.is_authenticated:
+    #     raise HttpError(401, 'Unauthorized')
 
-        orders = OrdersRepository.filter(
-            #    user_details__user_id=request.user.id,
-            available=True,
-            prefetch_related=['user_details', 'delivery_details', 'items'],
-        )
+    orders = OrdersRepository.filter(
+        #    user_details__user_id=request.user.id,
+        available=True,
+        prefetch_related=['user_details', 'delivery_details', 'items'],
+    )
 
-        return orders
-    except DatabaseError as exc:
-        # logger.error(f"Database error occurred: {str(e)}")
-        raise HttpError(500, 'Internal Server Error') from exc
-    except HttpError as e:
-        raise e
-    except Exception as exc:
-        # logging.error(f'{e}')
-        raise HttpError(500, 'The server couldn\'t do what you asked.') from exc
+    return orders
 
 
-@router.get('{order_id}/', response={200: OrderSchemaOut, 404: ErrorSchemaOut})
+@router.get('{order_id}/', response={200: OrderSchemaOut, 404: dict})
 def view_order(request, order_id: int):
     _ = request
-    order_instance = get_order(
-        order_id,
+    order_instance = OrdersRepository.get(
+        order_id=order_id,
         available=True,
         prefetch_related=['user_details', 'delivery_details', 'items'],
     )
@@ -73,7 +63,7 @@ def view_order(request, order_id: int):
     return 200, order_instance
 
 
-@router.post('', response={201: CreateOrderSchemaOut, 400: dict})
+@router.post('', response={201: dict, 400: dict, 409: dict})
 def create_order(request, data: CreateOrderSchemaIn):
     cart = make_request_with_session_cookie(request=request, url=settings.CART_API_URL)
 
@@ -83,9 +73,15 @@ def create_order(request, data: CreateOrderSchemaIn):
         case {"items": items} if not items:
             return 400, {"detail": "Bad request, no items in cart"}
 
+    order_id = get_session_from_redis(request).get('order_id', None)
+
+    if order_id and isinstance(order_id, int):
+        return 409, {"detail": "The order has already been created."}
+
     order_instance = OrdersRepository.model(
         order_id=generate_unique_id(),
-        cart_id=cart['cart_id'],
+        # REDUNDANT I need to delete the Cart_id column from the database.
+        cart_id=generate_unique_id(),
         status='pending',
         amount=cart['total_price'],
         paid=False,
@@ -98,7 +94,7 @@ def create_order(request, data: CreateOrderSchemaIn):
         order=order_instance,
         # If it is created by an anonymous user, specify the ID of the anonymous user.
         user_id=generate_unique_id(),
-        first_name=data.first_nema,
+        first_name=data.first_name,
         last_name=data.last_name,
         email=data.email,
         phone_number=data.phone_number,
@@ -138,11 +134,11 @@ def create_order(request, data: CreateOrderSchemaIn):
 
         session_cookie = request.COOKIES.get(settings.SESSION_COOKIE_NAME)
 
-        new_data_cache = {session_cookie: {'order_id': order_instance.order_id}}
+        add_order_id_to_cache = {'order_id': order_instance.order_id}
 
         session_data = get_session_from_redis(request)
 
-        session_data.update(new_data_cache)
+        session_data.update(add_order_id_to_cache)
 
         cache.set(session_cookie, json.dumps(session_data), timeout=1_250_000)
         # return redirect(reverse('payment:process'))
@@ -156,67 +152,57 @@ def create_order(request, data: CreateOrderSchemaIn):
         }
 
 
-def get_order(order_id: int, **kwargs):
-    try:
-        instance = OrdersRepository.get(order_id=order_id, **kwargs)
-        if not instance:
-            # logging.error('Order does not exist.')
-            raise HttpError(404, 'Order does not exist.')
-    except HttpError as exc:
-        raise exc
-    except Exception as exc:
-        # logging.error(f'The order status could not be displayed. Error: {e}')
-        raise HttpError(500, 'The server couldn\'t do what you asked.') from exc
-
-    return instance
-
-
-def update_status(order_instance, status: str):
-    try:
-        OrdersRepository.update(order_instance, status=status)
-        if order_instance.status != status:
-            # logging.error('Failed to update the status.')
-            raise HttpError(400, 'Failed to update the status.')
-    except HttpError as e:
-        raise e
-    except Exception as exc:
-        # logging.error(f'{e}')
-        raise HttpError(500, 'The server couldn\'t do what you asked.') from exc
-
-    return f'The order has been {status}.'
-
-
 @router.post('{order_id}/cancel/', response={200: dict, 500: dict})
 def cancel_order(request, order_id: int):
-    obj = get_order(int(order_id), available=True)
+    order_instance = OrdersRepository.get(
+        order_id=int(order_id),
+        available=True,
+    )
+
     if (
         request.user.is_staff
-        and obj.status not in ['pending', 'processing']
-        or obj.status != 'pending'
+        and order_instance.status not in ['pending', 'processing']
+        or order_instance.status != 'pending'
     ):
         raise HttpError(400, 'The order can\'t be cancelled.')
 
-    response_data = update_status(obj, 'cancelled')
+    OrdersRepository.update(order_instance, status='cancelled')
 
-    return 200, {'detail': response_data}
+    return 200, {'detail': 'The order has been cancelled.'}
 
 
 @router.patch('{order_id}/', response={200: dict, 500: dict})
-def update_order(request, order_id: int, data: StatusUpdateSchemaIn):
+def update_order(request, order_id: int, data: UpdateOrderSchemaIn):
     _ = request
-    obj = get_order(int(order_id), available=True)
-    response_data = update_status(obj, str(data.status.value))
 
-    # cart.clear()
-    # celery_order_created.delay(order.id)
+    order_instance = OrdersRepository.get(
+        order_id=int(order_id),
+        available=True,
+        select_related=['user_details', 'delivery_details'],
+    )
 
-    return 200, {'detail': response_data}
+    order_data = {"status": data.status, "amount": data.amount, "paid": data.paid}
+    user_data = data.user_details.dict() if data.user_details else {}
+    delivery_data = data.delivery_details.dict() if data.delivery_details else {}
+
+    try:
+        with transaction.atomic():
+            OrdersRepository.update(order_instance, **order_data)
+            UserRepository.update(order_instance.user_details, **user_data)
+            DeliveryRepository.update(order_instance.delivery_details, **delivery_data)
+
+        return 200, {'detail': 'The order has been updated.'}
+    except HttpError as e:
+        raise e
+    except Exception as e:
+        raise HttpError(500, f'Failed to update order: {str(e)}') from e
 
 
 @router.post('{order_id}/refund/')
 def refund_order(request, order_id: int):
     _ = request
     _ = order_id
+    return ''
 
 
 @staff_member_required

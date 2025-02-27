@@ -132,12 +132,17 @@ STRIPE_PUBLISHABLE_KEY = os.getenv('STRIPE_PUBLISHABLE_KEY')
 STRIPE_SECRET_KEY = os.getenv('STRIPE_SECRET_KEY')
 STRIPE_WEBHOOK_SECRET = os.getenv('STRIPE_WEBHOOK_SECRET')
 
-ORDER_API_URL = 'http://orders-service:8000/api/v1/orders/'
+ORDER_API_URL = os.getenv("ORDER_API_URL", "http://127.0.0.1:8004/api/v1/orders/")
 
 
-# SESSION_ENGINE = "django.contrib.sessions.backends.cache"
-# SESSION_CACHE_ALIAS = "default"
-#
+SESSION_ENGINE = "django.contrib.sessions.backends.cache"
+
+SESSION_COOKIE_AGE = 1209600
+SESSION_SAVE_EVERY_REQUEST = True
+SESSION_EXPIRE_AT_BROWSER_CLOSE = False
+SESSION_COOKIE_DOMAIN = ".mysite.com"
+
+
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
@@ -148,8 +153,3 @@ CACHES = {
         },
     }
 }
-#
-# SESSION_COOKIE_AGE = 1209600
-#
-# SESSION_SAVE_EVERY_REQUEST = True
-# SESSION_EXPIRE_AT_BROWSER_CLOSE = False

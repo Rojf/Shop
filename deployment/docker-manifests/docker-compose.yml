@@ -17,7 +17,7 @@ services:
     volumes:
       - shop_db:/var/lib/postgresql/data/
     env_file:
-      - ../../example.env
+      - ../../.env
     labels:
       - "traefik.enable=false"
     restart: unless-stopped
@@ -36,7 +36,7 @@ services:
     volumes:
       - redis_data:/data
     env_file:
-      - ../../example.env
+      - ../../.env
     labels:
       - "traefik.enable=false"
     restart: unless-stopped
@@ -54,15 +54,15 @@ services:
       db:
         condition: service_healthy
     env_file:
-      - ../../src/cart/example.env
-      - ../../example.env
+      - ../../src/cart/.env
+      - ../../.env
     restart: unless-stopped
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.cart.rule=PathPrefix(`/api/v1/cart`)"
+      - "traefik.http.routers.cart.rule=Host(`api.mysite.com`) && PathPrefix(`/v1/cart`)"
       - "traefik.http.services.cart-service.loadbalancer.server.port=8000"
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8000/api/v1/cart"]
+      test: ["CMD", "curl", "-f", "http://localhost:8000/v1/cart"]
       interval: 10s
       retries: 5
       timeout: 3s
@@ -78,15 +78,15 @@ services:
       db:
         condition: service_healthy
     env_file:
-      - ../../src/catalog/example.env
-      - ../../example.env
+      - ../../src/catalog/.env
+      - ../../.env
     restart: unless-stopped
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.catalog.rule=PathPrefix(`/api/v1/catalog`)"
+      - "traefik.http.routers.catalog.rule=Host(`api.mysite.com`) && PathPrefix(`/v1/catalog`)"
       - "traefik.http.services.catalog-service.loadbalancer.server.port=8000"
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8000/api/v1/catalog/health"]
+      test: ["CMD", "curl", "-f", "http://localhost:8000/v1/catalog"]
       interval: 10s
       retries: 5
       timeout: 3s
@@ -102,8 +102,8 @@ services:
   #     db:
   #       condition: service_healthy
   #   env_file:
-  #     - ../../src/notification/example.env
-  #     - ../../example.env
+  #     - ../../src/notification/.env
+  #     - ../../.env
   #   restart: unless-stopped
   #   labels:
   #     - "traefik.enable=true"
@@ -111,7 +111,7 @@ services:
   #     - "traefik.http.services.notification-service.loadbalancer.server.port=8000"
   #   healthcheck:
   #     test: ["CMD", "curl", "-f", "http://localhost:8000/api/v1/notification/health"]
-  #     interval: 10s
+  #     interval: 10sj
   #     retries: 5
   #     timeout: 3s
   #   networks:
@@ -126,15 +126,15 @@ services:
       db:
         condition: service_healthy
     env_file:
-      - ../../src/orders/example.env
-      - ../../example.env
+      - ../../src/orders/.env
+      - ../../.env
     restart: unless-stopped
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.orders.rule=PathPrefix(`/api/v1/orders`)"
+      - "traefik.http.routers.orders.rule=Host(`api.mysite.com`) && PathPrefix(`/v1/orders`)"
       - "traefik.http.services.orders-service.loadbalancer.server.port=8000"
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8000/api/v1/orders/health"]
+      test: ["CMD", "curl", "-f", "http://localhost:8000/v1/orders"]
       interval: 10s
       retries: 5
       timeout: 3s
@@ -150,15 +150,15 @@ services:
       db:
         condition: service_healthy
     env_file:
-      - ../../src/payment/example.env
-      - ../../example.env
+      - ../../src/payment/.env
+      - ../../.env
     restart: unless-stopped
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.payment.rule=PathPrefix(`/api/v1/payment`)"
+      - "traefik.http.routers.payment.rule=Host(`api.mysite.com`) && PathPrefix(`/v1/payment`)"
       - "traefik.http.services.payment-service.loadbalancer.server.port=8000"
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8000/api/v1/payment/docs"]
+      test: ["CMD", "curl", "-f", "http://localhost:8000/v1/payment/docs"]
       interval: 10s
       retries: 5
       timeout: 3s
@@ -174,8 +174,8 @@ services:
   #     db:
   #       condition: service_healthy
   #   env_file:
-  #     - ../../src/users/example.env
-  #     - ../../example.env
+  #     - ../../src/users/.env
+  #     - ../../.env
   #   restart: unless-stopped
   #   labels:
   #     - "traefik.enable=true"

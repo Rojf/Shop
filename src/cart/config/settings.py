@@ -127,13 +127,30 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CART_SESSION_ID = 'cart'
-SESSION_ENGINE = "django.contrib.sessions.backends.db"  # Использование базы данных
-SESSION_COOKIE_AGE = 1209600  # Срок действия cookie (2 недели)
-SESSION_SAVE_EVERY_REQUEST = True  # Сохранение сессии при каждом запросе
+
+
+SESSION_ENGINE = "django.contrib.sessions.backends.cache"
+
+SESSION_COOKIE_AGE = 1209600
+SESSION_SAVE_EVERY_REQUEST = True
+SESSION_EXPIRE_AT_BROWSER_CLOSE = False
+SESSION_COOKIE_DOMAIN = ".mysite.com"
+
+
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://redis:6379/0",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+            "SERIALIZER": "django_redis.serializers.json.JSONSerializer",
+        },
+    }
+}
 
 
 # If the project isn't running through Docker, you'll need to specify a url.
 #         VVVVVVVVVVVVVV
 # "http://127.0.0.1:8002/api/v1/catalog/"
 
-CATALOG_API_URL = os.getenv("CATALOG_API_URL", "http://127.0.0.1:8002/api/v1/catalog")
+CATALOG_API_URL = os.getenv("CATALOG_API_URL", "http://127.0.0.1:8002/api/v1/catalog/")

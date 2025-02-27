@@ -2,14 +2,11 @@ from datetime import datetime
 from enum import Enum
 from typing import List, Optional
 
-from ninja import Schema
+from ninja import Field, Schema
 from ninja.errors import ValidationError
 
 
-class DeliveryDetailsOut(Schema):
-    tracking_id: Optional[str]
-    tracking_url: Optional[str]
-    delivery_date: Optional[datetime] = None
+class BaseDelivery(Schema):
     delivery_type: str
     comment_to_delivery: Optional[str]
     address_1: str
@@ -17,6 +14,12 @@ class DeliveryDetailsOut(Schema):
     postal_code: int
     city: str
     country: str
+
+
+class DeliveryDetails(BaseDelivery):
+    tracking_id: Optional[str]
+    tracking_url: Optional[str]
+    delivery_date: Optional[datetime] = None
 
 
 class UserDetails(Schema):
@@ -26,7 +29,7 @@ class UserDetails(Schema):
     email: str
 
 
-class Item(Schema):
+class ItemDetails(Schema):
     name: str
     product_id: int
     image_url: str
@@ -36,40 +39,30 @@ class Item(Schema):
     quantity: int
 
 
-class OrderTest(Schema):
-    total_quintity: int
-    total_price: int
-
-
 class OrderSchemaOut(Schema):
-    order_id: int
+    order_id: str = Field(
+        ...,
+        description="order_id (BigInt) passed as string to "
+        "avoid precision loss in Swagger UI",
+    )
     status: str
     currency: str
     amount: float
     shipping_cost: int
     inclubing_taxes: int
     created: datetime
-    delivery_details: DeliveryDetailsOut
+    delivery_details: DeliveryDetails
     user_details: UserDetails
-    items: List[Item]
+    items: List[ItemDetails]
+
+    @staticmethod
+    def resolve_order_id(obj):
+        if not obj.order_id:
+            return None
+        return str(obj.order_id)
 
 
-class ErrorSchemaOut(Schema):
-    detail: str
-
-
-class CreateOrderSchemaIn(Schema):
-    delivery_type: str
-    address_1: str
-    address_2: str
-    city: str
-    postal_code: int
-    country: str
-    comment_to_delivery: Optional[str]
-    first_nema: str
-    last_name: str
-    phone_number: str
-    email: str
+class CreateOrderSchemaIn(BaseDelivery, UserDetails):
 
     def validate_postal_code(self, value):
         if len(str(value)) != 5:
@@ -84,11 +77,13 @@ class OrderStatusEnum(str, Enum):
     DELIVERED = 'delivered'
     CANCELED = 'canceled'
 
+    def __str__(self):
+        return str(self.value)
 
-class CreateOrderSchemaOut(Schema):
-    detail: str
 
-
-class StatusUpdateSchemaIn(Schema):
-    status: OrderStatusEnum
-    paid: bool
+class UpdateOrderSchemaIn(Schema):
+    status: Optional[OrderStatusEnum]
+    amount: Optional[float]
+    paid: Optional[bool]
+    user_details: Optional[UserDetails]
+    delivery_details: Optional[BaseDelivery]
