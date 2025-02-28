@@ -57,7 +57,7 @@ sections = ["FUTURE", "STDLIB", "THIRDPARTY", "FIRSTPARTY", "LOCALFOLDER"]
 skip = ["*/migrations/*"]
 
 [tool.pylint]
-disable = ["C0114", "R0901", "C0115", "C0116", "R0903", "R0801"]
+disable = ["C0114", "R0901", "C0115", "C0116", "R0903", "R0801", "E0611"]
 max-line-length = 90
 
 [tool.pylint.MASTER]
@@ -67,6 +67,10 @@ init-hook = """
 import sys, os
 sys.path.append('.venv/lib/python3.12/site-packages')
 sys.path.append(os.path.abspath("src"))
+# Pylint does not see the api.view inside the url.
+# There is a problem with finding paths inside the service. CRUTCH
+#                               VVVVVVVVVV
+sys.path.append(os.path.abspath("src/cart"))
 """
 ignore-paths = [
   ".*/manage.py",
