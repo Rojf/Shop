@@ -73,6 +73,8 @@ class Cart:
         self.__add_total_price_for_cart(self.cart)
         self.__add_total_quantity_for_cart(self.cart)
 
+        self.session[settings.CART_SESSION_ID] = self.cart
+
         self.__save()
 
     def clear(self):
@@ -83,6 +85,9 @@ class Cart:
             "total_quantity": 0,
             "total_price": 0.0,
         }
+
+        self.session[settings.CART_SESSION_ID] = self.cart
+
         self.__save()
 
     def __add_total_price_for_product(self, item):

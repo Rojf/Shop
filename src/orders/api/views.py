@@ -1,10 +1,6 @@
-import json
-
 import weasyprint
-from django.conf import settings
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.staticfiles import finders
-from django.core.cache import cache
 from django.db import IntegrityError, transaction
 from django.http.response import HttpResponse
 from django.shortcuts import get_object_or_404, render
@@ -14,8 +10,6 @@ from ninja.pagination import paginate
 from ninja.router import Router
 
 from utils.generate import generate_unique_id
-from utils.http_client import make_request_with_session_cookie
-from utils.sessions_utils import get_session_from_redis
 
 from .repository import (
     DeliveryRepository,
@@ -65,7 +59,8 @@ def view_order(request, order_id: int):
 
 @router.post('', response={201: dict, 400: dict, 409: dict})
 def create_order(request, data: CreateOrderSchemaIn):
-    cart = make_request_with_session_cookie(request=request, url=settings.CART_API_URL)
+    session = request.session
+    cart = session.get('cart')
 
     match cart:
         case None:
@@ -73,9 +68,9 @@ def create_order(request, data: CreateOrderSchemaIn):
         case {"items": items} if not items:
             return 400, {"detail": "Bad request, no items in cart"}
 
-    order_id = get_session_from_redis(request).get('order_id', None)
+    order_id = session.get('order', {}).get('order_id', None)
 
-    if order_id and isinstance(order_id, int):
+    if order_id:
         return 409, {"detail": "The order has already been created."}
 
     order_instance = OrdersRepository.model(
@@ -132,15 +127,17 @@ def create_order(request, data: CreateOrderSchemaIn):
             delivery_instance.save()
             OrderItemRepository.bulk_create(order_items)
 
-        session_cookie = request.COOKIES.get(settings.SESSION_COOKIE_NAME)
+        order_instance = OrdersRepository.get(
+            order_id=order_instance.order_id,
+            available=True,
+            prefetch_related=['user_details', 'delivery_details', 'items'],
+        )
 
-        add_order_id_to_cache = {'order_id': order_instance.order_id}
+        order_data = OrderSchemaOut.from_orm(order_instance).dict()
 
-        session_data = get_session_from_redis(request)
+        session['order'] = order_data
+        session.modified = True
 
-        session_data.update(add_order_id_to_cache)
-
-        cache.set(session_cookie, json.dumps(session_data), timeout=1_250_000)
         # return redirect(reverse('payment:process'))
 
         return 201, {'detail': 'The order is placed.'}
@@ -173,12 +170,19 @@ def cancel_order(request, order_id: int):
 
 @router.patch('{order_id}/', response={200: dict, 500: dict})
 def update_order(request, order_id: int, data: UpdateOrderSchemaIn):
-    _ = request
+    session = request.session
+    cart = session.get('cart')
+
+    match cart:
+        case None:
+            return 400, {"detail": "Cart data is not available"}
+        case {"items": items} if not items:
+            return 400, {"detail": "Bad request, no items in cart"}
 
     order_instance = OrdersRepository.get(
         order_id=int(order_id),
         available=True,
-        select_related=['user_details', 'delivery_details'],
+        select_related=['user_details', 'delivery_details', 'items'],
     )
 
     order_data = {"status": data.status, "amount": data.amount, "paid": data.paid}

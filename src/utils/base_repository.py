@@ -23,7 +23,7 @@ class BaseRepository(Generic[T]):
                 .get(*args, **kwargs)
             )
         except ObjectDoesNotExist as exc:
-            raise HttpError(404, 'Order does not exist.') from exc
+            raise HttpError(404, f'{cls.model.__name__} does not exist.') from exc
 
     @classmethod
     def all(cls, *args, **kwargs) -> QuerySet[T]:

@@ -6,7 +6,6 @@ from services.payment_service import (
     create_stripe_checkout_session,
 )
 from utils.generate import generate_unique_id
-from utils.sessions_utils import get_session_from_redis
 
 from .repository import PaymentRepository
 from .schemas import PaymentCreateSchema
@@ -16,22 +15,23 @@ router = Router()
 
 @router.post('process/')
 def payment_process(request, payment_data: PaymentCreateSchema):
-    redis_session_data = get_session_from_redis(request)
+    session = request.session
+    order_session = session.get('order')
 
-    order_id = redis_session_data.get('order_id', '')
+    order_id = order_session.get('order_id')
     order = fetch_order_details(order_id)
 
     session_data = build_stripe_session_data(order)
 
-    PaymentRepository.create(
-        payment_id=generate_unique_id(),
-        order_id=order_id,
-        user_id=generate_unique_id(),
-        amount=order.get('amount', 0.00),
-        currency=order.get('currency', 'usd'),
-        status="pending",
-        transaction_id=None,
-        **payment_data.dict()
-    )
+    if not PaymentRepository.get(order_id=order_id):
+        PaymentRepository.create(
+            payment_id=generate_unique_id(),
+            order_id=order_id,
+            user_id=generate_unique_id(),
+            amount=order.get('amount', 0.00),
+            currency=order.get('currency', 'USD'),
+            status="pending",
+            **payment_data.dict()
+        )
 
     return {"payment_url": create_stripe_checkout_session(session_data)}

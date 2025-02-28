@@ -7,7 +7,7 @@ class Payment(models.Model):
     user_id = models.PositiveBigIntegerField()
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     currency = models.CharField(max_length=3, default="USD")
-    status = models.CharField(max_length=10)
+    status = models.CharField(max_length=10, default="pedding")
     payment_method = models.CharField(max_length=50)
     payment_gateway = models.CharField(max_length=50)
     transaction_id = models.CharField(max_length=255, unique=True, null=True, blank=True)
