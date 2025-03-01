@@ -1,6 +1,6 @@
 import time
 from decimal import Decimal
-from typing import Dict, Optional
+from typing import Dict
 
 import stripe
 from django.conf import settings
@@ -57,7 +57,9 @@ def format_stripe_line_item(item):
     }
 
 
-def create_stripe_checkout_session(session_data: dict) -> Optional[str]:
+def create_stripe_checkout_session(
+    session_data: dict,
+) -> stripe.checkout.Session:
     """Creates and returns Stripe Checkout Session."""
 
     try:
@@ -66,6 +68,14 @@ def create_stripe_checkout_session(session_data: dict) -> Optional[str]:
         if session is None:
             raise HttpError(500, "")
 
-        return session.url
+        return session
     except StripeError as e:
         raise HttpError(500, f"Stripe error: {str(e)}") from e
+
+
+def cancel_an_existing_stripe_session(existing_session_id: str):
+    if existing_session_id:
+        try:
+            stripe.checkout.Session.expire(existing_session_id)
+        except StripeError:
+            pass
