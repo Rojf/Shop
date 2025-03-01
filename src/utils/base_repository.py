@@ -55,8 +55,12 @@ class BaseRepository(Generic[T]):
             raise HttpError(500, 'Internal Server Error') from exc
 
     @classmethod
-    def create(cls, *args, **kwargs) -> tuple[T, bool]:
+    def get_or_create(cls, *args, **kwargs) -> tuple[T, bool]:
         return cls.model.objects.get_or_create(*args, **kwargs)
+
+    @classmethod
+    def update_or_create(cls, *args, **kwargs) -> tuple[T, bool]:
+        return cls.model.objects.update_or_create(*args, **kwargs)
 
     @classmethod
     def update(cls, instance, **kwargs) -> T:

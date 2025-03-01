@@ -19,8 +19,8 @@ class Payment(models.Model):
 
     def __str__(self):
         return str(
-            f"Payment {self.transaction_id} - "
-            "{self.amount} {self.currency} ({self.status})"
+            f"Payment {self.payment_id} - "
+            f"{self.amount} {self.currency} ({self.status})"
         )
 
 
