@@ -153,3 +153,6 @@ CACHES = {
         },
     }
 }
+
+
+SESSION_CACHE_KEY_TEMPLATE = "django.contrib.sessions.cache{session_id}"

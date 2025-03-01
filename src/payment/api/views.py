@@ -1,6 +1,5 @@
 from ninja import Router
 
-from services.order_service import fetch_order_details
 from services.payment_service import (
     build_stripe_session_data,
     create_stripe_checkout_session,
@@ -16,11 +15,8 @@ router = Router()
 @router.post('process/')
 def payment_process(request, payment_data: PaymentCreateSchema):
     session = request.session
-    order_session = session.get('order')
-
-    order_id = order_session.get('order_id')
-    order = fetch_order_details(order_id)
-
+    order = session.get('order')
+    order_id = order.get('order_id')
     session_data = build_stripe_session_data(order)
 
     if not PaymentRepository.get(order_id=order_id):
