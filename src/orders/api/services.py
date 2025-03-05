@@ -161,3 +161,17 @@ def update_order_service(cart, order_id, data):
         raise e
     except Exception as e:
         raise HttpError(500, f'Failed to update order: {str(e)}') from e
+
+
+def update_order_status_service(order_id, data):
+    order_data = {"paid": data.paid}
+
+    order = OrdersRepository.get(order_id=order_id)
+
+    try:
+        OrdersRepository.update(order, **order_data)
+
+    except HttpError as e:
+        raise e
+    except Exception as e:
+        raise HttpError(500, f'Failed to update order: {str(e)}') from e

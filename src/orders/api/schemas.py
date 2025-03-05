@@ -87,3 +87,7 @@ class UpdateOrderSchemaIn(Schema):
     paid: Optional[bool]
     user_details: Optional[UserDetails]
     delivery_details: Optional[BaseDelivery]
+
+
+class UpdateOrderStatusSchemaIn(Schema):
+    paid: bool = False

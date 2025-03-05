@@ -49,7 +49,7 @@ def build_stripe_session_data(order: Dict) -> Dict:
 
     session_data = {
         'mode': 'payment',
-        'client_reference_id': order.get('order_id'),
+        'client_reference_id': order.get('order_id', 0),
         'success_url': success_url,
         'cancel_url': cancel_url,
         'expires_at': int(time.time() + (60 * 30)),

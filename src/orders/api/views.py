@@ -14,6 +14,7 @@ from .schemas import (
     CreateOrderSchemaIn,
     OrderSchemaOut,
     UpdateOrderSchemaIn,
+    UpdateOrderStatusSchemaIn,
 )
 from .services import (
     cancel_order_service,
@@ -21,6 +22,7 @@ from .services import (
     get_order_service,
     order_list_service,
     update_order_service,
+    update_order_status_service,
 )
 
 # from .tasks import order_creared as celery_order_created
@@ -57,7 +59,6 @@ def create_order(request, data: CreateOrderSchemaIn):
     order_instance = create_order_service(cart, order_id, data)
 
     session['order'] = OrderSchemaOut.from_orm(order_instance).dict()
-    session.modified = True
 
     return 201, {'detail': 'The order is placed.'}
 
@@ -89,9 +90,11 @@ def refund_order(request, order_id: int):
 
 
 @router.patch('{order_id}/update/')
-def update_paid_and_status_order(request, order_id: int):
+def update_paid_and_status_order(request, order_id: int, data: UpdateOrderStatusSchemaIn):
     _ = request
-    _ = order_id
+
+    update_order_status_service(order_id, data)
+    print(f"\n\nOrder_id - {order_id}\n\n")
     return 'Not implemented yet.'
 
 

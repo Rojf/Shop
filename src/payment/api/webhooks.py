@@ -10,7 +10,7 @@ from .repository import PaymentRepository
 router = Router()
 
 
-@router.post("webhook/")
+@router.post("")
 def stripe_webhook(request):
     payload = request.body
     sig_header = request.META['HTTP_STRIPE_SIGNATURE']
@@ -20,10 +20,10 @@ def stripe_webhook(request):
         event = stripe.Webhook.construct_event(
             payload, sig_header, settings.STRIPE_WEBHOOK_SECRET
         )
-    except ValueError:
-        return HttpError(400, "Invalid payload")
-    except stripe.SignatureVerificationError:
-        return HttpError(400, "Invalid signature")
+    except ValueError as exc:
+        raise HttpError(400, f"Error parsing payload: {str(exc)}") from exc
+    except stripe.SignatureVerificationError as exc:
+        raise HttpError(400, f"Error parsing payload: {str(exc)}") from exc
 
     if event.type == 'checkout.session.completed':
         session = event['data']['object']
@@ -35,7 +35,9 @@ def stripe_webhook(request):
             make_request(
                 method="PATCH",
                 payload=data,
-                url=settings.ORDER_API_URL + '/' + session.client_reference_id,
+                url=settings.ORDER_API_URL
+                + str(session.client_reference_id)
+                + "/update/",
             )
 
             instance = PaymentRepository.get(order_id=session.client_reference_id)
