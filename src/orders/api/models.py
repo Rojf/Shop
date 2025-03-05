@@ -14,10 +14,6 @@ class Order(models.Model):
         unique=True,
         validators=[MinValueValidator(1), MaxValueValidator(9223372036854775807)],
     )
-    cart_id = models.BigIntegerField(
-        unique=True,
-        validators=[MinValueValidator(1), MaxValueValidator(9223372036854775807)],
-    )
     status = models.CharField(
         max_length=1, choices=OrderStatus.choices, default=OrderStatus.PENDING
     )

@@ -1,6 +1,6 @@
 from django.conf import settings
 
-from utils.base_repository import BaseRepository
+from common.repositories.base import BaseRepository
 
 
 class UserRepository(BaseRepository):

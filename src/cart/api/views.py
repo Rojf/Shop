@@ -1,10 +1,10 @@
 from django.conf import settings
 from ninja import Router
 
-from utils.http_client import make_request
+from common.utils.http_client import make_request
 
-from .cart import Cart
 from .schemas import CartSchema, RequestDataSchema
+from .services import Cart
 
 router = Router()
 
@@ -20,12 +20,10 @@ def add_to_cart(request, data: RequestDataSchema):
     cart = Cart(request)
 
     product_id = data.product_id
-
     product = make_request(method="GET", url=f"{settings.CATALOG_API_URL}{product_id}/")
 
     cart.add(product=product, quantity=data.quantity, override_quantity=data.override)
 
-    # return JsonResponse({"detail": "Product added to cart", "cart": cart.to_dict()})
     return cart.to_dict()
 
 
@@ -34,7 +32,6 @@ def remove_from_cart(request, product_id: int):
     cart = Cart(request)
     cart.remove(product_id)
 
-    # return JsonResponse({"detail": "Product removed from cart", "cart": cart.to_dict()})
     return cart.to_dict()
 
 

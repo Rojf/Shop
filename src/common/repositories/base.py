@@ -48,6 +48,8 @@ class BaseRepository(Generic[T]):
                 .filter(*args, **kwargs)
             )
 
+        # Filter does not raise an ObjectDoesNotExist exception.
+        # We need to rewrite this section of the code.
         except ObjectDoesNotExist as exc:
             raise HttpError(404, f'{cls.model.__name__} does not exist.') from exc
         except DatabaseError as exc:

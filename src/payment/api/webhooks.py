@@ -3,7 +3,7 @@ from django.conf import settings
 from ninja.errors import HttpError
 from ninja.router import Router
 
-from utils.http_client import make_request
+from common.utils.http_client import make_request
 
 from .repository import PaymentRepository
 

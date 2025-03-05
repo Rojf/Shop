@@ -39,7 +39,6 @@ RUN apk del \
   && rm -rf .cache/pip
 
 COPY src/orders/ /usr/src/app
-COPY src/utils/ /usr/src/app/utils/
-COPY src/services/ /usr/src/app/services/
+COPY src/common/ /usr/src/app/common/
 
 CMD ["poetry", "run", "python", "manage.py", "runserver", "0.0.0.0:8000"]

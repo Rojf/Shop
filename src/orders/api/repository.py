@@ -1,4 +1,4 @@
-from utils.base_repository import BaseRepository
+from common.repositories.base import BaseRepository
 
 from .models import Delivery, Order, OrderItem, User
 

@@ -1,6 +1,6 @@
 from django.db.models import Model
 
-from utils.base_repository import BaseRepository
+from common.repositories.base import BaseRepository
 
 from .models import Payment, Refund
 

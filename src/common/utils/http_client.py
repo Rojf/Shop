@@ -1,27 +1,8 @@
 import json
-from typing import Any, Dict, Optional, Union
+from typing import Any, Dict, Optional
 
 import requests
-from django.conf import settings
-from django.http import HttpRequest
 from ninja.errors import HttpError
-
-
-def make_request_with_session_cookie(
-    request: HttpRequest, url: str, timeout: int = 10, **kwargs: dict
-) -> Union[Dict, None]:
-    session_cookie = request.COOKIES.get(settings.SESSION_COOKIE_NAME)
-    headers = kwargs.get('headers', {})
-
-    if session_cookie:
-        if not headers.get('cookie'):
-            headers['cookie'] = f'{settings.SESSION_COOKIE_NAME}={session_cookie}'
-
-        response = requests.get(url, headers=headers, timeout=timeout)
-
-        if response.status_code == 200:
-            return response.json()
-    return None
 
 
 def make_request(
