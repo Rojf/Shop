@@ -1,0 +1,53 @@
+{
+  "vhosts": [
+    { "name": "shop_vhost" }
+  ],
+  "users": [
+    { "name": "admin", "password": "admin", "tags": "administrator" }
+  ],
+  "permissions": [
+    {
+      "user": "admin",
+      "vhost": "shop_vhost",
+      "configure": ".*",
+      "write": ".*",
+      "read": ".*"
+    }
+  ],
+  "exchanges": [
+    {
+      "name": "shop_exchange",
+      "vhost": "shop_vhost",
+      "type": "direct",
+      "durable": true
+    }
+  ],
+  "queues": [
+    {
+      "name": "queue_notifications",
+      "vhost": "shop_vhost",
+      "durable": true
+    },
+    {
+      "name": "queue_orders",
+      "vhost": "shop_vhost",
+      "durable": true
+    }
+  ],
+  "bindings": [
+    {
+      "source": "shop_exchange",
+      "vhost": "shop_vhost",
+      "destination": "queue_notifications",
+      "destination_type": "queue",
+      "routing_key": "notification"
+    },
+    {
+      "source": "shop_exchange",
+      "vhost": "shop_vhost",
+      "destination": "queue_orders",
+      "destination_type": "queue",
+      "routing_key": "order"
+    }
+  ]
+}

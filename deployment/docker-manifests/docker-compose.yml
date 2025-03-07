@@ -9,6 +9,8 @@ volumes:
     name: shop_redis_data
   shop_db:
     name: shop_db_data
+  rabbitmq_data:
+  rabbitmq_logs:
 
 services:
   db:
@@ -16,6 +18,7 @@ services:
     container_name: postgres
     volumes:
       - shop_db:/var/lib/postgresql/data/
+      # - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     env_file:
       - ../../.env
     labels:
@@ -42,6 +45,23 @@ services:
     restart: unless-stopped
     ports:
       - "8001:8001"
+    networks:
+      - shop_net
+
+  rabbitmq:
+    image: rabbitmq:4.0-management
+    container_name: rabbitmq
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+      - rabbitmq_logs:/var/log/rabbitmq
+      - ./rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf
+      - ./definitions.json:/etc/rabbitmq/definitions.json
+    labels:
+      - "traefik.enable=False"
+    restart: unless-stopped
+    ports:
+      - "5672:5672"
+      - "15672:15672"
     networks:
       - shop_net
 
