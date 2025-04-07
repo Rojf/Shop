@@ -11,14 +11,12 @@ def payment_process(request, payment_data: PaymentCreateSchema):
     payment_session = request.session.get('payment', {})
     order_session = request.session.get('order')
 
-    stripe_session_id, stripe_session_url = payment_process_service(
+    stripe_session = payment_process_service(
         transaction_id=payment_session.get('transaction_id', 0),
         order=order_session,
         payment_data=payment_data,
     )
 
-    request.session.update(
-        {'payment': {'transaction_id': stripe_session_id}, 'modified': True}
-    )
+    request.session.update({'payment': {'transaction_id': stripe_session.id}})
 
-    return {"payment_url": stripe_session_url}
+    return {"payment_url": stripe_session.url}

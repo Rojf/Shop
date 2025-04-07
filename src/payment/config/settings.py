@@ -26,7 +26,7 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv("DEBUG", "False") == "True"
 
-AALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "*").split(',')
+ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "*").split(',')
 
 
 # Application definition
@@ -156,3 +156,27 @@ CACHES = {
 
 
 SESSION_CACHE_KEY_TEMPLATE = "django.contrib.sessions.cache{session_id}"
+
+
+# Celery configurations
+CELERY_BROKER_URL = os.getenv(
+    "CELERY_BROKER_URL", "amqp://admin:admin@localhost:5672/shop_vhost"
+)
+CELERY_RESULT_BACKEND = os.getenv("CELERY_RESULT_BACKEND", "redis://localhost:6379/0")
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_DEFAULT_QUEUE = os.getenv('CELERY_TASK_DEFAULT_QUEUE', 'celery')
+CELERY_TASK_DEFAULT_EXCHANGE = os.getenv('CELERY_TASK_DEFAULT_EXCHANGE', 'celery')
+CELERY_TASK_ROUTES = {
+    "send_payment_notification": {
+        "queue": "queue_notifications",
+        "exchange": "shop_exchange",
+        "routing_key": "notification",
+    },
+}
+CELERY_TASK_QUEUE = {
+    'queue_notifications': {
+        'exchange': 'shop_exchange',
+        'routing_key': 'notification',
+    },
+}

@@ -45,6 +45,7 @@ services:
     restart: unless-stopped
     ports:
       - "8001:8001"
+      - "6379:6379"
     networks:
       - shop_net
 
@@ -59,6 +60,11 @@ services:
     labels:
       - "traefik.enable=False"
     restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "rabbitmqctl", "status"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
     ports:
       - "5672:5672"
       - "15672:15672"
@@ -72,6 +78,8 @@ services:
       dockerfile: src/cart/Dockerfile
     depends_on:
       db:
+        condition: service_healthy
+      rabbitmq:
         condition: service_healthy
     env_file:
       - ../../src/cart/.env
@@ -97,6 +105,8 @@ services:
     depends_on:
       db:
         condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
     env_file:
       - ../../src/catalog/.env
       - ../../.env
@@ -121,21 +131,38 @@ services:
   #   depends_on:
   #     db:
   #       condition: service_healthy
+  #     rabbitmq:
+  #       condition: service_healthy
   #   env_file:
   #     - ../../src/notification/.env
   #     - ../../.env
   #   restart: unless-stopped
   #   labels:
-  #     - "traefik.enable=true"
-  #     - "traefik.http.routers.notification.rule=PathPrefix(`/api/v1/notification`)"
-  #     - "traefik.http.services.notification-service.loadbalancer.server.port=8000"
-  #   healthcheck:
-  #     test: ["CMD", "curl", "-f", "http://localhost:8000/api/v1/notification/health"]
-  #     interval: 10sj
-  #     retries: 5
-  #     timeout: 3s
+  #     - "traefik.enable=false"
+  #   #   - "traefik.http.routers.notification.rule=PathPrefix(`/api/v1/notification`)"
+  #   #   - "traefik.http.services.notification-service.loadbalancer.server.port=8000"
+  #   # healthcheck:
+  #   #   test: ["CMD", "curl", "-f", "http://localhost:8000/api/v1/notification/health"]
+  #   #   interval: 10sj
+  #   #   retries: 5
+  #   #   timeout: 3s
   #   networks:
   #     - shop_net
+
+
+  # flower:
+  #   container_name: flower-celery
+  #   image: mher/flower:2.0
+  #   environment:
+  #           - CELERY_BROKER_URL=amqp://admin:admin@rabbitmq:5672/shop_vhost
+  #           - FLOWER_PORT=5555
+  #   ports:
+  #     - "5555:5555"
+  #   depends_on:
+  #     - rabbitmq
+  #   networks:
+  #     - shop_net
+
 
   orders-service:
     container_name: orders_service
@@ -144,6 +171,8 @@ services:
       dockerfile: src/orders/Dockerfile
     depends_on:
       db:
+        condition: service_healthy
+      rabbitmq:
         condition: service_healthy
     env_file:
       - ../../src/orders/.env
@@ -168,6 +197,8 @@ services:
       dockerfile: src/payment/Dockerfile
     depends_on:
       db:
+        condition: service_healthy
+      rabbitmq:
         condition: service_healthy
     env_file:
       - ../../src/payment/.env

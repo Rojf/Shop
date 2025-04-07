@@ -1,8 +1,6 @@
-**/.env
-**/env
-
 # Environments
 .env
+*env
 .venv
 env/
 venv/
@@ -11,6 +9,7 @@ env.bak/
 venv.bak/
 
 **/.env
+**/*env
 **/.venv
 **/env/
 **/venv/

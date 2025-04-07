@@ -57,11 +57,11 @@ sections = ["FUTURE", "STDLIB", "THIRDPARTY", "FIRSTPARTY", "LOCALFOLDER"]
 skip = ["*/migrations/*"]
 
 [tool.pylint]
-disable = ["C0114", "R0901", "C0115", "C0116", "R0903", "R0801", "E0611"]
+disable = ["C0114", "R0901", "C0115", "C0116", "R0903", "R0801", "E0611", "C0411"]
 max-line-length = 90
 
 [tool.pylint.MASTER]
-load-plugins = ["pylint_django", "pylint_isort"]
+load-plugins = ["pylint_django"]
 django-settings-module = "config.settings"
 init-hook = """
 import sys, os

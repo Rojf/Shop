@@ -1,6 +1,6 @@
 import time
 from decimal import Decimal
-from typing import Dict
+from typing import Dict, Optional
 
 import stripe
 from django.conf import settings
@@ -78,7 +78,7 @@ def create_stripe_checkout_session(
         raise HttpError(500, f"Stripe error: {str(e)}") from e
 
 
-def cancel_an_existing_stripe_session(existing_session_id: str):
+def cancel_an_existing_stripe_session(existing_session_id: Optional[str]):
     if existing_session_id:
         try:
             stripe.checkout.Session.expire(existing_session_id)
@@ -107,10 +107,22 @@ def get_payment_update_params(
 def payment_process_service(transaction_id: str, order: dict, payment_data: Schema):
     cancel_an_existing_stripe_session(existing_session_id=transaction_id)
 
+    checking_order_availability_in_session(order)
     stripe_session = create_stripe_checkout_session(build_stripe_session_data(order))
 
     PaymentRepository.update_or_create(
         **get_payment_update_params(order, payment_data, stripe_session.id)
     )
 
-    return stripe_session.id, stripe_session.url
+    return stripe_session
+
+
+def checking_order_availability_in_session(order_session):
+    if order_session is None:
+        raise ValueError(
+            """
+            Order not found in session.
+            To avoid making an exception.
+            The user needs to add the product to the cart and create an order.
+            """
+        )

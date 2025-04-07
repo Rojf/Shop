@@ -19,7 +19,8 @@
       "name": "shop_exchange",
       "vhost": "shop_vhost",
       "type": "direct",
-      "durable": true
+      "durable": true,
+      "auto_delete": false
     }
   ],
   "queues": [
@@ -29,7 +30,7 @@
       "durable": true
     },
     {
-      "name": "queue_orders",
+      "name": "queue_payment",
       "vhost": "shop_vhost",
       "durable": true
     }
@@ -45,7 +46,7 @@
     {
       "source": "shop_exchange",
       "vhost": "shop_vhost",
-      "destination": "queue_orders",
+      "destination": "queue_payment",
       "destination_type": "queue",
       "routing_key": "order"
     }
