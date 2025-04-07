@@ -5,6 +5,8 @@ RUN apk update \
     gcc \
     curl \
     libpq-dev \
+    jq \
+    neovim \
     python3-dev \
   && rm -rf /var/cache/apk/*
 
@@ -29,4 +31,4 @@ RUN apk del \
 COPY src/notification/ /usr/src/app
 COPY src/common/ /usr/src/app/common/
 
-CMD ["poetry", "run", "python", "manage.py", "runserver", "0.0.0.0:8000"]
+ENTRYPOINT ["sh", "entrypoint.sh"]

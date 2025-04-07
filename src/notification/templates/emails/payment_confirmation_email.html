@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Подтверждение оплаты</title>
+</head>
+<body style="font-family: 'Roboto', sans-serif; background-color: #e9ecef; margin: 0; padding: 0; color: #333;">
+
+    <div style="max-width: 800px; margin: 40px auto; padding: 40px; background-color: #ffffff; border-radius: 15px; box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1); text-align: left; font-size: 16px;">
+        <h1 style="font-size: 32px; color: #2c3e50; margin-bottom: 20px; font-weight: 600;">Подтверждение оплаты</h1>
+        <p style="line-height: 1.7; color: #555;">Здравствуйте, {{ user_name }}!</p>
+        <p style="line-height: 1.7; color: #555;">Спасибо за вашу оплату. Мы рады сообщить вам, что ваша транзакция была успешно завершена.</p>
+
+        <div style="background: #f4f6f9; border-radius: 12px; padding: 25px; margin-top: 40px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); border-left: 4px solid #27ae60;">
+            <p style="margin: 10px 0; font-size: 16px;"><strong>Сумма:</strong> <span style="font-weight: bold; color: #27ae60;">{{ amount_total }} руб.</span></p>
+            <p style="margin: 10px 0; font-size: 16px;"><strong>Налог:</strong> {{ tax }} руб.</p>
+            <p style="margin: 10px 0; font-size: 16px;"><strong>Метод доставки:</strong> {{ shipping_method }}</p>
+            <p style="margin: 10px 0; font-size: 16px;"><strong>Стоимость доставки:</strong> {{ shipping_cost }} руб.</p>
+            <p style="margin: 10px 0; font-size: 16px;"><strong>Дата заказа:</strong> {{ payment_date }}</p>
+            <p style="margin: 10px 0; font-size: 16px;"><strong>Номер заказа:</strong> {{ order_id }}</p>
+        </div>
+
+        <div style="margin-top: 40px; padding: 20px; background: #f4f6f9; border-radius: 12px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);">
+            <h2 style="font-size: 20px; color: #333;">Список товаров:</h2>
+            {% for product in products %}
+            <div style="display: flex; align-items: center; margin-bottom: 20px; border-bottom: 1px solid #e0e0e0; padding-bottom: 15px;">
+                <img src="{{ product.image_url }}" alt="{{ product.name }}" style="width: 80px; height: 80px; border-radius: 8px; margin-right: 20px;">
+                <div style="flex-grow: 1;">
+                    <p style="margin: 5px 0; font-size: 18px; font-weight: bold; color: #333;">{{ product.name }}</p>
+                    <p style="margin: 5px 0; color: #7f8c8d;">Количество: {{ product.quantity }}</p>
+                    <p style="margin: 5px 0; font-weight: bold; color: #2980b9;">Цена: {{ product.price }} руб.</p>
+                </div>
+            </div>
+            {% endfor %}
+            <p style="font-size: 16px;"><strong>Итого за товары:</strong> {{ amount_subtotal }} руб.</p>
+            <p style="font-size: 20px; font-weight: bold; color: #27ae60;"><strong>Общая сумма с учетом налога и доставки:</strong> {{ amount_total }} руб.</p>
+        </div>
+
+        <p style="line-height: 1.7; color: #555;">Если у вас есть вопросы или вам нужна дополнительная информация, не стесняйтесь обращаться к нам.</p>
+
+        <div style="margin-top: 50px; font-size: 14px; color: #aaa; text-align: center;">
+            <p>С уважением,</p>
+            <p>Команда поддержки</p>
+            <p><a href="mailto:support@example.com" style="color: #3498db; text-decoration: none;">Напишите нам</a></p>
+        </div>
+    </div>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+<!---->
+<!-- <!DOCTYPE html> -->
+<!-- <html lang="ru"> -->
+<!-- <head> -->
+<!--     <meta charset="UTF-8"> -->
+<!--     <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
+<!--     <title>Подтверждение оплаты</title> -->
+<!--     <style> -->
+<!--         body { -->
+<!--             font-family: Arial, sans-serif; -->
+<!--             background-color: #f4f4f4; -->
+<!--             margin: 0; -->
+<!--             padding: 20px; -->
+<!--         } -->
+<!--         .container { -->
+<!--             max-width: 600px; -->
+<!--             margin: auto; -->
+<!--             background: #ffffff; -->
+<!--             padding: 20px; -->
+<!--             border-radius: 5px; -->
+<!--             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); -->
+<!--         } -->
+<!--         h1 { -->
+<!--             color: #333; -->
+<!--         } -->
+<!--         p { -->
+<!--             color: #555; -->
+<!--         } -->
+<!--         .payment-details { -->
+<!--             margin-top: 20px; -->
+<!--             padding: 10px; -->
+<!--             border: 1px solid #ddd; -->
+<!--             border-radius: 5px; -->
+<!--             background-color: #f9f9f9; -->
+<!--         } -->
+<!--         .product-list { -->
+<!--             margin-top: 20px; -->
+<!--             border: 1px solid #ddd; -->
+<!--             border-radius: 5px; -->
+<!--             background-color: #f9f9f9; -->
+<!--             padding: 10px; -->
+<!--         } -->
+<!--         .product-item { -->
+<!--             display: flex; -->
+<!--             align-items: center; -->
+<!--             margin-bottom: 10px; -->
+<!--         } -->
+<!--         .product-item img { -->
+<!--             width: 50px; -->
+<!--             height: 50px; -->
+<!--             margin-right: 10px; -->
+<!--         } -->
+<!--         .footer { -->
+<!--             margin-top: 20px; -->
+<!--             font-size: 12px; -->
+<!--             color: #aaa; -->
+<!--         } -->
+<!--     </style> -->
+<!-- </head> -->
+<!-- <body> -->
+<!--     <div class="container"> -->
+<!--         <h1>Подтверждение оплаты</h1> -->
+<!--         <p>Здравствуйте, {{ user_name }}!</p> -->
+<!--         <p>Спасибо за вашу оплату. Мы рады сообщить вам, что ваша транзакция была успешно завершена.</p> -->
+<!--          -->
+<!--         <div class="payment-details"> -->
+<!--             <p><strong>Сумма:</strong> {{ amount_total }} руб.</p> -->
+<!--             <p><strong>Налог:</strong> {{ tax }} руб.</p> -->
+<!--             <p><strong>Метод доставки:</strong> {{ shipping_method }}</p> -->
+<!--             <p><strong>Стоимость доставки:</strong> {{ shipping_cost }} руб.</p> -->
+<!--             <p><strong>Дата заказа:</strong> {{ payment_date }}</p> -->
+<!--             <p><strong>Номер заказа:</strong> {{ order_id }}</p> -->
+<!--         </div> -->
+<!---->
+<!--         <div class="product-list"> -->
+<!--             <h2>Список товаров:</h2> -->
+<!--             {% for product in products %} -->
+<!--             <div class="product-item"> -->
+<!--                 <img src="{{ product.image_url }}" alt="{{ product.name }}"> -->
+<!--                 <div> -->
+<!--                     <p><strong>{{ product.name }}</strong></p> -->
+<!--                     <p>Количество: {{ product.quantity }}</p> -->
+<!--                     <p>Цена: {{ product.price }} руб.</p> -->
+<!--                 </div> -->
+<!--             </div> -->
+<!--             {% endfor %} -->
+<!--             <p><strong>Итого за товары:</strong> {{ amount_subtotal }} руб.</p> -->
+<!--             <p><strong>Общая сумма с учетом налога и доставки:</strong> {{ amount_total }} руб.</p> -->
+<!--         </div> -->
+<!---->
+<!--         <p>Если у вас есть вопросы или вам нужна дополнительная информация, не стесняйтесь обращаться к нам.</p> -->
+<!--          -->
+<!--         <div class="footer"> -->
+<!--             <p>С уважением,</p> -->
+<!--             <p>Команда поддержки</p> -->
+<!--         </div> -->
+<!--     </div> -->
+<!-- </body> -->
+<!-- </html> -->
+<!---->
+<!---->
+
+<!-- <!DOCTYPE html> -->
+<!-- <html lang="ru"> -->
+<!-- <head> -->
+<!--     <meta charset="UTF-8"> -->
+<!--     <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
+<!--     <title>Подтверждение оплаты</title> -->
+<!--     <style> -->
+<!--         body { -->
+<!--             font-family: Arial, sans-serif; -->
+<!--             background-color: #f4f4f4; -->
+<!--             margin: 0; -->
+<!--             padding: 20px; -->
+<!--         } -->
+<!--         .container { -->
+<!--             max-width: 600px; -->
+<!--             margin: auto; -->
+<!--             background: #ffffff; -->
+<!--             padding: 20px; -->
+<!--             border-radius: 5px; -->
+<!--             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); -->
+<!--         } -->
+<!--         h1 { -->
+<!--             color: #333; -->
+<!--         } -->
+<!--         p { -->
+<!--             color: #555; -->
+<!--         } -->
+<!--         .payment-details { -->
+<!--             margin-top: 20px; -->
+<!--             padding: 10px; -->
+<!--             border: 1px solid #ddd; -->
+<!--             border-radius: 5px; -->
+<!--             background-color: #f9f9f9; -->
+<!--         } -->
+<!--         .footer { -->
+<!--             margin-top: 20px; -->
+<!--             font-size: 12px; -->
+<!--             color: #aaa; -->
+<!--         } -->
+<!--     </style> -->
+<!-- </head> -->
+<!-- <body> -->
+<!--     <div class="container"> -->
+<!--         <h1>Подтверждение оплаты</h1> -->
+<!--         <p>Здравствуйте, {{ user_name }}!</p> -->
+<!--         <p>Спасибо за вашу оплату. Мы рады сообщить вам, что ваша транзакция была успешно завершена.</p> -->
+<!--          -->
+<!--         <div class="payment-details"> -->
+<!--             <p><strong>Сумма:</strong> {{ amount_total }} руб.</p> -->
+<!--             <p><strong>Дата заказа:</strong> {{ payment_date }}</p> -->
+<!--             <p><strong>Номер заказа:</strong> {{ order_id }}</p> -->
+<!--         </div> -->
+<!---->
+<!--         <p>Если у вас есть вопросы или вам нужна дополнительная информация, не стесняйтесь обращаться к нам.</p> -->
+<!--          -->
+<!--         <div class="footer"> -->
+<!--             <p>С уважением,</p> -->
+<!--             <p>Команда поддержки</p> -->
+<!--         </div> -->
+<!--     </div> -->
+<!-- </body> -->
+<!-- </html> -->
