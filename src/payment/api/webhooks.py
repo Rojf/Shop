@@ -4,6 +4,7 @@ from ninja.errors import HttpError
 from ninja.router import Router
 
 from common.utils.http_client import make_request
+from config.celery import app
 
 from .repository import PaymentRepository
 
@@ -12,6 +13,8 @@ router = Router()
 
 @router.post("")
 def stripe_webhook(request):
+    order_session = request.session.get('order')
+
     payload = request.body
     sig_header = request.META['HTTP_STRIPE_SIGNATURE']
     event = None
@@ -43,6 +46,17 @@ def stripe_webhook(request):
             instance = PaymentRepository.get(order_id=session.client_reference_id)
             PaymentRepository.update(
                 instance, transaction_id=session.payment_intent, status="paid"
+            )
+
+            app.send_task(
+                "send_payment_notification",
+                kwargs={
+                    "order": order_session,
+                    "payment_date": session.created,
+                    "amount_subtotal": session.amount_subtotal,
+                    "amount_total": session.amount_total,
+                },
+                queue="queue_notifications",
             )
 
     return {"status": "success"}
