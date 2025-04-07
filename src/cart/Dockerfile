@@ -5,6 +5,7 @@ RUN apk update \
     gcc \
     curl \
     libpq-dev \
+    neovim \
     python3-dev \
   && rm -rf /var/cache/apk/*
 

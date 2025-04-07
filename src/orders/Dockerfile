@@ -17,6 +17,7 @@ RUN apk update \
     openjpeg-dev \
     zlib-dev \
     libwebp-dev \
+    neovim \
     g++ \
   && rm -rf /var/cache/apk/*
 
