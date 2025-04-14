@@ -51,6 +51,23 @@ Check out the [Discussions](https://github.com/Rojf/Shop/discussions) and [Proje
   - Make
   - Pytest
 
+
+---
+
+## 🔧 Local Environment Setup: `/etc/hosts`
+
+To ensure proper session handling and communication between services using domain names, add the following lines to your `/etc/hosts` file:
+
+```bash
+127.0.0.1	mysite.com
+127.0.0.1	api.mysite.com
+```
+
+
+This allows your local machine to resolve these domains correctly when accessing the API or other services.
+Alternatively, you can use custom domain names — just make sure they match the configuration in Traefik or your reverse proxy.
+
+
 ---
 
 ## 🚀 Getting Started
