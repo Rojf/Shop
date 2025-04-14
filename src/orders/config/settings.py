@@ -134,13 +134,13 @@ SESSION_ENGINE = "django.contrib.sessions.backends.cache"
 SESSION_COOKIE_AGE = 1209600
 SESSION_SAVE_EVERY_REQUEST = True
 SESSION_EXPIRE_AT_BROWSER_CLOSE = False
-SESSION_COOKIE_DOMAIN = ".mysite.com"
+SESSION_COOKIE_DOMAIN = os.getenv('ROOT_DOMAIN')
 
 
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://redis:6379/0",
+        "LOCATION": os.getenv('REDIS_URL', 'redis://localhost:6379/0'),
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
             "SERIALIZER": "django_redis.serializers.json.JSONSerializer",
@@ -152,16 +152,6 @@ CACHES = {
 #         VVVVVVVVVVVVVV
 # "http://127.0.0.1:8002/api/v1/catalog/"
 
-CART_API_URL = os.getenv('CART_API_URL', 'http://cart-service:8000/api/v1/cart/')
-SHIPPING_API_URL = os.getenv(
-    'SHIPPING_API_URL', 'http://shipping-service:8000/api/v1/shipping/'
-)
-PAYMENT_API_URL = os.getenv(
-    'PAYMENT_API_URL', 'http://payment-service:8000/api/v1/payment/'
-)
-CATALOG_API_URL = os.getenv(
-    'CATALOG_API_URL', 'http://catalog-service:8000/api/v1/catalog/'
-)
-NOTIFICATION_API_URL = os.getenv(
-    'NOTIFICATION_API_URL', 'http://notification-service:8000/api/v1/notification/'
-)
+CART_API_URL = os.getenv('CART_API_URL', 'http://127.0.0.1:8000/v1/cart/')
+CATALOG_API_URL = os.getenv('CATALOG_API_URL', 'http://127.0.0.1:8001/v1/catalog/')
+PAYMENT_API_URL = os.getenv('PAYMENT_API_URL', 'http://127.0.0.1:8003/v1/payment/')

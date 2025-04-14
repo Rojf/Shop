@@ -32,6 +32,14 @@ shell:
 	docker exec -it $(SERVICE)_service /bin/sh
 
 
+test_cart_service:
+	ps aux | grep "[p]ython.*runserver.*8000" | awk '{print $$2}' | xargs kill
+
+	@export PYTHONPATH=$PYTHONPATH:src; \
+	export $$(grep -v '^\s*#' src/cart/.env); \
+	poetry run python src/cart/manage.py runserver 8000
+
+
 local-build:
 	poetry install
 	@$(call migrate)
@@ -52,11 +60,14 @@ local-up:
 	@echo "Running local servers and Celery worker."
 	@echo "These ports are used in backend services: $$ports !!!"
 
+	$(DOCKER_COMPOSE) -f $(DOCKER_COMPOSE_FILE) up -d redis
+
 	@i=0; \
 	export PYTHONPATH=$PYTHONPATH:src; \
 	for service in $(SERVICES); do \
 		port=$$(echo $(PORTS) | cut -d ' ' -f $$((i+1))); \
 		echo "Running $$service service on port $$port"; \
+		export $$(grep -v '^\s*#' src/$$service/.env); \
 		nohup poetry run python src/$$service/manage.py runserver $$port & \
 		i=$$((i+1)); \
 	done

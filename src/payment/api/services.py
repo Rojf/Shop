@@ -44,8 +44,8 @@ def format_stripe_line_item(item):
 def build_stripe_session_data(order: Dict) -> Dict:
     """Generates data for the Stripe payment session."""
 
-    success_url = 'http://example.com/completed/'
-    cancel_url = 'http://example.com/canceled/'
+    success_url = settings.SUCCESS_URL
+    cancel_url = settings.CANCEL_URL
 
     session_data = {
         'mode': 'payment',

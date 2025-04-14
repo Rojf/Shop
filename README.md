@@ -1,74 +1,129 @@
-# Online market
+# [E-Commerce Platform](https://roadmap.sh/projects/scalable-ecommerce-platform)
 
-The project is under development and may not be perfect.
+An online store built with a **microservice architecture**.
+This platform includes the following services:
 
-If you want to help with the development. Information will be given below.
+- 🛒 **Cart**
+- 📦 **Catalog**
+- 🧾 **Order**
+- 📩 **Notification**
+- 👤 **User**
 
-## Get involved!
+⚠️ **Note**: This project is under active development and may not be stable or feature-complete.
 
--
--
--
+---
 
-## Stack
+## 🤝 Contributing
 
-- [Make](https://www.gnu.org/software/make/) - a utility designed to automate the conversion of files from one form to another.
-- [Poetry](https://python-poetry.org) - it is a dependency management tool in Python projects (analogous to the built-in pip)
+Want to help? Contributions are welcome!
+Check out the [Discussions](https://github.com/Rojf/Shop/discussions) and [Project Roadmap](https://github.com/Rojf/Shop/projects) to get started.
 
-## Getting Started
+---
 
-Before you copy the project, go to the directory where you will place the project.
+## 🛠️ Tech Stack
 
+- **Languages**:
+  - Python `3.12`
 
-##### Cloning a repository.
+- **Frameworks**:
+  - Django `5.1.4`
+  - Django-Ninja `1.3.0` *(update if needed)*
 
-First, clone the repository using git:
+- **Databases & Storage**:
+  - PostgreSQL `17.2`
+  - Redis `7.4`
+
+- **Messaging & Tasks**:
+  - Celery `5.x` *(add exact version)*
+  - RabbitMQ `4.0`
+
+- **API Gateway & Networking**:
+  - NGINX
+  - Traefik `3.3`
+
+- **Payments & Notifications**:
+  - Stripe
+  - Twilio
+
+- **Dev Tools**:
+  - Docker
+  - Poetry
+  - Make
+  - Pytest
+
+---
+
+## 🚀 Getting Started
+
+### 1. Clone the Repository
 
 ```bash
 git clone https://github.com/Rojf/Shop
 cd Shop
 ```
 
-There are two launch options: Local or docker container.
-You can run all the services or one, but for a complete understanding you will need to check the interaction between the services sometimes.
 
+---
 
-##### Running the application locally
+### 2. Run Locally and Stop
+
+⚠️ If `make local-down` fails due to `kill` permissions, try running with administrator rights:
 
 ```bash
-# Installing dependencies
+# Install dependencies
 make local-build
 
-# Launching a docker container..
+# Start services
 make local-up
-```
 
-##### Stop running applications
-
-How to stop processes using Make. If you need to stop the applications, please run the command:
-
-Exception!!!
-The make local-down command was incorrectly processed if it was not run as an administrator. The reason is the kill command.
-
-```bash
+# Stop services
 make local-down
 ```
 
 
-##### Startup in Docker
+---
+
+### 3. Run Fully in Docker and Stop
+
+```bash
+# start app in docker
+make up
+
+# Stop app in docker
+make down
+```
 
 
-
-## Product Roadmap
-
-[Discussion](https://github.com/Rojf/Shop/discussions) | [Roadmap Kanban](https://github.com/Rojf/Shop/projects)
+---
 
 
-✅ Completed: Finished, available on [production instance](https://example.com)
+### 📚 Documentation
 
-🔄 In Progress: Task or milestone is actively being worked on
+Each microservice has its own documentation located in the `docs/` directory:
 
-📅 Planned: Task or milestone is scheduled for a future date
+|Service|Documentation Path|Description|
+|---|---|---|
+|🧑‍💼 User|`docs/user/README.md`|Authentication and user profiles|
+|📦 Catalog|`docs/catalog/README.md`|Product catalog and categories|
+|🛒 Cart|`docs/cart/README.md`|Shopping cart logic|
+|🧾 Order|`docs/order/README.md`|Order placement and status|
+|🔔 Notification|`docs/notification/README.md`|Email/SMS/Push notifications|
+|💳 Payment|`docs/payment/README.md`|Integration with Stripe (if exists)|
 
-Status | Feature | Release
--------|---------|---------
+To explore APIs, expected request/response formats, and workflows, check the relevant `README.md` inside each subdirectory.
+
+---
+
+## 🧭 Product Roadmap
+
+[Discussions](https://github.com/Rojf/Shop/discussions) | [Kanban Board](https://github.com/Rojf/Shop/projects)
+
+✅ Completed – Deployed and functional
+🔄 In Progress – Actively being developed
+📅 Planned – Scheduled for the future
+
+| Status | Feature      | Release  |
+| ------ | ------------ | -------- |
+| ✅      | Basic setup  | `v0.1.0` |
+| 🔄     | Auth service | `v0.2.0` |
+| 📅     | Admin panel  | `v0.3.0` |

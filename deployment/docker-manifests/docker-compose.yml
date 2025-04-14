@@ -71,6 +71,7 @@ services:
     networks:
       - shop_net
 
+
   cart-service:
     container_name: cart_service
     build:
@@ -96,6 +97,7 @@ services:
       timeout: 3s
     networks:
       - shop_net
+
 
   catalog-service:
     container_name: catalog_service
@@ -123,6 +125,7 @@ services:
     networks:
       - shop_net
 
+
   # notification-service:
   #   container_name: notification_service
   #   build:
@@ -146,20 +149,6 @@ services:
   #   #   interval: 10sj
   #   #   retries: 5
   #   #   timeout: 3s
-  #   networks:
-  #     - shop_net
-
-
-  # flower:
-  #   container_name: flower-celery
-  #   image: mher/flower:2.0
-  #   environment:
-  #           - CELERY_BROKER_URL=amqp://admin:admin@rabbitmq:5672/shop_vhost
-  #           - FLOWER_PORT=5555
-  #   ports:
-  #     - "5555:5555"
-  #   depends_on:
-  #     - rabbitmq
   #   networks:
   #     - shop_net
 

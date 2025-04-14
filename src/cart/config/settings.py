@@ -134,13 +134,13 @@ SESSION_ENGINE = "django.contrib.sessions.backends.cache"
 SESSION_COOKIE_AGE = 1209600
 SESSION_SAVE_EVERY_REQUEST = True
 SESSION_EXPIRE_AT_BROWSER_CLOSE = False
-SESSION_COOKIE_DOMAIN = ".mysite.com"
+SESSION_COOKIE_DOMAIN = os.getenv('ROOT_DOMAIN')
 
 
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://redis:6379/0",
+        "LOCATION": os.getenv("REDIS_URL", "redis://localhost:6379/0"),
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
             "SERIALIZER": "django_redis.serializers.json.JSONSerializer",
@@ -153,4 +153,4 @@ CACHES = {
 #         VVVVVVVVVVVVVV
 # "http://127.0.0.1:8002/api/v1/catalog/"
 
-CATALOG_API_URL = os.getenv("CATALOG_API_URL", "http://127.0.0.1:8002/api/v1/catalog/")
+CATALOG_API_URL = os.getenv("CATALOG_API_URL", "http://127.0.0.1:8001/v1/catalog/")

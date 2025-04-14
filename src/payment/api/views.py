@@ -19,4 +19,4 @@ def payment_process(request, payment_data: PaymentCreateSchema):
 
     request.session.update({'payment': {'transaction_id': stripe_session.id}})
 
-    return {"payment_url": stripe_session.url}
+    return {"checkout_url": stripe_session.url}
